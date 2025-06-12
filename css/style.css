@@ -1,7 +1,7 @@
 /* Import Google Font (Contoh: Montserrat dan Open Sans) */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Open+Sans:wght@400;600&display=swap');
 
-/* Variabel Warna (Bisa disesuaikan) */
+/* Variabel Warna (Telah disesuaikan dan ditambah beberapa variabel baru) */
 :root {
     --primary-color: #007bff; /* Biru Bootstrap standar, bisa diganti */
     --secondary-color: #6c757d; /* Abu-abu Bootstrap standar */
@@ -12,12 +12,18 @@
     --accent-color: #ffc107; /* Kuning sebagai aksen */
     --success-color: #28a745;
     --danger-color: #dc3545;
-    --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    --card-hover-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    --info-color: #17a2b8; /* Variabel baru untuk warna info */
+    --text-muted-dark: #5a5c69; /* Variabel baru untuk teks abu-abu gelap */
+    --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Shadow lebih halus */
+    --card-hover-shadow: 0 8px 24px rgba(0, 0, 0, 0.12); /* Shadow hover lebih halus */
     --border-radius: .375rem; /* Sesuaikan dengan border-radius Bootstrap jika perlu */
 }
 
-/* Gaya Dasar Body */
+/* Gaya Dasar Body dan Global */
+html {
+    scroll-behavior: smooth; /* Efek scroll halus */
+}
+
 body {
     font-family: 'Open Sans', sans-serif;
     color: var(--text-color);
@@ -31,60 +37,203 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--primary-color); /* Judul dengan warna utama */
 }
 
+/* Navbar Kustom */
+.navbar {
+    transition: background-color 0.3s ease-in-out;
+}
+
+.navbar-brand {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 1.75rem; /* Ukuran brand lebih besar */
+    color: var(--primary-color) !important;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: var(--secondary-color);
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    transition: color 0.2s ease;
+}
+
+.navbar-light .navbar-nav .nav-link:hover,
+.navbar-light .navbar-nav .nav-link.active {
+    color: var(--primary-color);
+}
+
+.navbar-nav .btn {
+    margin-left: 0.5rem;
+}
+
+/* Hero Section (Homepage) */
+.hero-section {
+    background: linear-gradient(rgba(0, 123, 255, 0.6), rgba(0, 86, 179, 0.8)), url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bGlicmFyeXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=1500&q=80') no-repeat center center;
+    background-size: cover;
+    color: var(--text-light);
+    padding: 120px 0; /* Padding lebih besar */
+    text-align: center;
+    border-bottom: 5px solid var(--accent-color);
+}
+
+.hero-section h1 {
+    font-size: 3.8rem; /* Ukuran font lebih besar */
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+    color: var(--text-light); /* Warna teks judul putih di hero */
+}
+
+.hero-section .lead {
+    font-size: 1.3rem;
+    margin-bottom: 30px;
+    font-weight: 400;
+}
+
+.hero-section .btn-success {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.hero-section .btn-success:hover {
+    background-color: #1e7e34; /* Warna hijau lebih gelap saat hover */
+    border-color: #1e7e34;
+    transform: translateY(-2px);
+}
+
+/* Fitur Unggulan Section */
+.feature-icon {
+    font-size: 3.5rem; /* Ukuran ikon lebih besar */
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.feature-icon-container:hover .feature-icon {
+    transform: scale(1.1); /* Efek zoom pada ikon saat hover */
+}
+
+/* Card Buku */
+.card {
+    border: none; /* Hilangkan border default card */
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-shadow);
+    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.card:hover {
+    box-shadow: var(--card-hover-shadow);
+    transform: translateY(-5px); /* Efek sedikit terangkat saat hover */
+}
+
+.card-img-top {
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+    max-height: 300px; /* Atur tinggi maksimal gambar sampul */
+    object-fit: cover; /* Pastikan gambar mengisi area tanpa distorsi */
+}
+
+.card-title a {
+    text-decoration: none;
+    color: var(--primary-color); /* Warna judul kartu */
+    font-weight: 700;
+    transition: color 0.3s ease; /* Transisi warna ditambahkan */
+}
+
+.card-title a:hover {
+    color: var(--accent-color); /* Warna aksen saat hover */
+}
+
+.card-subtitle {
+    font-size: 0.9rem;
+}
+
+.card-body {
+    padding: 1.5rem; /* Padding lebih pada body kartu */
+}
+
+.card-footer {
+    background-color: transparent;
+    border-top: 1px solid #eee; /* Garis pemisah halus */
+}
+
+/* Tombol */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    font-weight: 500;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3; /* Warna biru lebih gelap saat hover */
+    border-color: #0056b3;
+}
+
+.btn-outline-primary {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    font-weight: 500;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+}
+
 /* Halaman Login & Register */
-/* PERUBAHAN UTAMA DI SINI */
 .auth-bg {
     background-color: var(--light-bg);
     display: flex;
-    align-items: center;       /* Menengahkan secara vertikal */
-    justify-content: center;   /* Menengahkan secara horizontal */
+    align-items: center;
+    justify-content: center;
     min-height: 100vh;
-    padding: 20px 15px; /* Memberi sedikit padding keliling */
+    padding: 20px 0;
 }
 
 .auth-card {
     width: 100%;
-    /* max-width sekarang diatur oleh class .col-* di HTML */
+    max-width: 450px; /* Lebar card sedikit lebih besar */
     padding: 35px;
     background-color: white;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    border-top: 5px solid var(--primary-color);
+    border-radius: 15px; /* Border radius lebih besar */
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+    border-top: 5px solid var(--primary-color); /* Aksen di atas card */
 }
 
-.header-login {
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.header-login .brand-logo {
-    font-size: 2.8rem;
+.auth-card .brand-logo {
+    font-size: 2.2rem;
     font-weight: bold;
     color: var(--primary-color);
-    margin-bottom: 10px;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.auth-card .brand-logo a {
     text-decoration: none;
-}
- .header-login .brand-logo i {
-    margin-right: 8px;
-}
-.header-login p {
-    font-size: 1.1rem;
-    color: var(--secondary-color);
+    color: var(--primary-color);
 }
 
+.auth-card h3 {
+    margin-bottom: 1.8rem;
+    color: var(--text-color); /* Warna teks biasa untuk subjudul */
+}
 
-/* Styling lain-lain tetap sama */
-/* ... (sisa kode CSS dari file Anda tidak perlu diubah) ... */
 .form-control:focus {
     border-color: var(--primary-color);
     box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
 }
 
+/* Footer */
 .footer {
     background-color: var(--dark-bg);
     color: var(--text-light);
     padding: 30px 0;
-    margin-top: auto;
+    margin-top: auto; /* Mendorong footer ke bawah jika konten pendek */
 }
 .footer p {
     margin-bottom: 0;
@@ -93,7 +242,148 @@ h1, h2, h3, h4, h5, h6 {
 .footer a {
     color: var(--accent-color);
     text-decoration: none;
+    transition: color 0.2s ease-in-out;
 }
 .footer a:hover {
     color: var(--text-light);
+}
+
+/* Admin Dashboard Sidebar */
+.admin-sidebar {
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 260px; /* Sedikit lebih lebar */
+    background-color: var(--dark-bg);
+    padding-top: 1rem;
+    z-index: 1040; /* Pastikan di atas konten lain, di bawah modal */
+    transition: transform 0.3s ease-in-out; /* Transisi untuk slide */
+}
+
+.admin-sidebar .admin-brand {
+    padding: 1rem 1.5rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--text-light);
+    border-bottom: 1px solid #4f5962;
+    margin-bottom: 1rem;
+}
+.admin-sidebar .admin-brand i {
+    margin-right: 10px;
+    color: var(--accent-color);
+}
+
+.admin-sidebar .nav-link {
+    padding: 0.9rem 1.5rem;
+    text-decoration: none;
+    font-size: 1rem;
+    color: #adb5bd;
+    display: block;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    border-left: 3px solid transparent; /* Indikator aktif */
+}
+
+.admin-sidebar .nav-link:hover {
+    color: var(--text-light);
+    background-color: #495057;
+    border-left-color: var(--accent-color);
+}
+
+.admin-sidebar .nav-link.active {
+    color: var(--text-light);
+    background-color: var(--primary-color); /* Warna utama untuk item aktif */
+    border-left-color: var(--accent-color); /* Aksen kuning */
+    font-weight: 500;
+}
+
+.admin-sidebar .nav-link i {
+    margin-right: 12px; /* Jarak ikon lebih besar */
+    width: 20px; /* Lebar tetap untuk ikon agar teks sejajar */
+    text-align: center;
+}
+
+.admin-sidebar .logout-link {
+    color: #dc3545 !important; /* Warna merah untuk logout */
+}
+.admin-sidebar .logout-link:hover {
+    background-color: rgba(220, 53, 69, 0.1);
+    border-left-color: #dc3545;
+}
+
+
+/* Admin Content Area */
+.admin-content {
+    margin-left: 260px; /* Sesuaikan dengan lebar sidebar */
+    padding: 20px;
+    background-color: var(--light-bg);
+    min-height: 100vh;
+    transition: margin-left 0.3s ease-in-out;
+}
+
+.admin-navbar {
+    background-color: #fff;
+    border-bottom: 1px solid #dee2e6;
+    margin-left: 260px; /* Sesuaikan dengan lebar sidebar */
+    padding: 0.75rem 1.5rem;
+    position: sticky;
+    top:0;
+    z-index: 99;
+    transition: margin-left 0.3s ease-in-out;
+}
+.admin-navbar .navbar-brand {
+    font-size: 1.25rem;
+    color: var(--text-color);
+}
+
+/* Statistik Card (Admin) - Menggunakan Variabel */
+.card.border-left-primary { border-left: .25rem solid var(--primary-color)!important; }
+.card.border-left-success { border-left: .25rem solid var(--success-color)!important; }
+.card.border-left-info { border-left: .25rem solid var(--info-color)!important; }
+.card.border-left-warning { border-left: .25rem solid var(--accent-color)!important; }
+
+.text-xs { font-size: .7rem; }
+.text-gray-300 { color: #dddfeb!important; } /* Bisa dibuat variabel jika sering dipakai */
+.text-gray-800 { color: var(--text-muted-dark)!important; } /* Diganti dengan variabel */
+
+/* Tabel Kustom */
+.table th {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    font-weight: 500;
+}
+.table-hover tbody tr:hover {
+    background-color: rgba(0,123,255,0.05); /* Hover halus pada baris tabel */
+}
+
+/* Utility Classes */
+.fw-500 { font-weight: 500; }
+.shadow-strong { box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important; }
+.text-decoration-none { text-decoration: none !important; }
+
+
+/* Penyesuaian Responsif */
+@media (max-width: 768px) {
+    /* Penyesuaian Ukuran Font & Padding */
+    h1, .hero-section h1 {
+        font-size: 2.5rem;
+    }
+    .hero-section {
+        padding: 80px 15px;
+    }
+    .auth-card {
+        padding: 25px;
+    }
+
+    /* Pengaturan Sidebar Adm   in untuk Mobile (siap untuk di-toggle JS) */
+    .admin-sidebar {
+        transform: translateX(-100%); /* Sembunyikan sidebar di luar layar */
+    }
+    .admin-sidebar.is-open {
+        transform: translateX(0); /* Tampilkan sidebar saat class .is-open ditambahkan */
+    }
+
+    .admin-content, .admin-navbar {
+        margin-left: 0; /* Konten & navbar mengambil lebar penuh */
+    }
 }
