@@ -1,0 +1,99 @@
+/* Import Google Font (Contoh: Montserrat dan Open Sans) */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Open+Sans:wght@400;600&display=swap');
+
+/* Variabel Warna (Bisa disesuaikan) */
+:root {
+    --primary-color: #007bff; /* Biru Bootstrap standar, bisa diganti */
+    --secondary-color: #6c757d; /* Abu-abu Bootstrap standar */
+    --light-bg: #f8f9fa;
+    --dark-bg: #343a40;
+    --text-color: #212529;
+    --text-light: #ffffff;
+    --accent-color: #ffc107; /* Kuning sebagai aksen */
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    --card-hover-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    --border-radius: .375rem; /* Sesuaikan dengan border-radius Bootstrap jika perlu */
+}
+
+/* Gaya Dasar Body */
+body {
+    font-family: 'Open Sans', sans-serif;
+    color: var(--text-color);
+    line-height: 1.6;
+    background-color: #fff; /* Latar belakang putih bersih */
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    color: var(--primary-color); /* Judul dengan warna utama */
+}
+
+/* Halaman Login & Register */
+/* PERUBAHAN UTAMA DI SINI */
+.auth-bg {
+    background-color: var(--light-bg);
+    display: flex;
+    align-items: center;       /* Menengahkan secara vertikal */
+    justify-content: center;   /* Menengahkan secara horizontal */
+    min-height: 100vh;
+    padding: 20px 15px; /* Memberi sedikit padding keliling */
+}
+
+.auth-card {
+    width: 100%;
+    /* max-width sekarang diatur oleh class .col-* di HTML */
+    padding: 35px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border-top: 5px solid var(--primary-color);
+}
+
+.header-login {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.header-login .brand-logo {
+    font-size: 2.8rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    text-decoration: none;
+}
+ .header-login .brand-logo i {
+    margin-right: 8px;
+}
+.header-login p {
+    font-size: 1.1rem;
+    color: var(--secondary-color);
+}
+
+
+/* Styling lain-lain tetap sama */
+/* ... (sisa kode CSS dari file Anda tidak perlu diubah) ... */
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+.footer {
+    background-color: var(--dark-bg);
+    color: var(--text-light);
+    padding: 30px 0;
+    margin-top: auto;
+}
+.footer p {
+    margin-bottom: 0;
+    color: rgba(255,255,255,0.7);
+}
+.footer a {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+.footer a:hover {
+    color: var(--text-light);
+}

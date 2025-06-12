@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moderasi Diskusi - Admin LiterasiKita</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css">
+     <style>
+        .toast-container {
+            z-index: 1100;
+        }
+    </style>
+</head>
+<body>
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        </div>
+
+    <div class="admin-sidebar">
+        <div class="admin-brand"><i class="bi bi-shield-lock-fill"></i> Admin Panel</div>
+        <nav class="nav flex-column">
+            <a class="nav-link" href="admin_dashboard.html"><i class="bi bi-house-door-fill"></i> Dashboard</a>
+            <a class="nav-link" href="admin_manajemen_buku.html"><i class="bi bi-book-fill"></i> Manajemen Buku</a>
+            <a class="nav-link active" aria-current="page" href="admin_moderasi_diskusi.html"><i class="bi bi-chat-left-text-fill"></i> Moderasi Diskusi</a>
+            <a class="nav-link" href="admin_laporan_aktivitas.html"><i class="bi bi-graph-up-arrow"></i> Laporan Aktivitas</a>
+            <a class="nav-link" href="admin_manajemen_tantangan.html"><i class="bi bi-trophy-fill"></i> Manajemen Tantangan</a>
+            <a class="nav-link mt-auto logout-link" href="#" onclick="event.preventDefault(); showLogoutToastAndRedirect();">
+                <i class="bi bi-box-arrow-right"></i> Logout
+            </a>
+        </nav>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light admin-navbar sticky-top shadow-sm">
+        <div class="container-fluid">
+            <button class="btn btn-light d-md-none me-2" id="sidebarToggleModerasi"><i class="bi bi-list"></i></button>
+            <span class="navbar-brand mb-0 h1">Moderasi Diskusi</span>
+        </div>
+    </nav>
+
+    <main class="admin-content">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Kelola Postingan Diskusi</h1>
+                 <div class="btn-group" role="group" aria-label="Filter Moderasi">
+                    <input type="radio" class="btn-check" name="filterModerasiRadio" id="filterSemua" value="semua" autocomplete="off" checked onchange="filterDiskusi()">
+                    <label class="btn btn-outline-primary btn-sm" for="filterSemua">Semua</label>
+
+                    <input type="radio" class="btn-check" name="filterModerasiRadio" id="filterLaporan" value="dilaporkan" autocomplete="off" onchange="filterDiskusi()">
+                    <label class="btn btn-outline-danger btn-sm" for="filterLaporan">Dilaporkan <span class="badge bg-danger" id="countLaporan">1</span></label>
+
+                    <input type="radio" class="btn-check" name="filterModerasiRadio" id="filterPending" value="pending" autocomplete="off" onchange="filterDiskusi()">
+                    <label class="btn btn-outline-warning btn-sm" for="filterPending">Pending <span class="badge bg-warning text-dark" id="countPending">1</span></label>
+                </div>
+            </div>
+
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Daftar Postingan</h6>
+                    <input type="search" class="form-control form-control-sm w-auto" id="searchDiskusi" placeholder="Cari postingan..." onkeyup="filterDiskusi()">
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle" id="tabelModerasiDiskusi">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th><input class="form-check-input" type="checkbox" value="" id="selectAllPostsModerasi" onchange="toggleSelectAllModerasi(this.checked)"></th>
+                                    <th>Tipe</th>
+                                    <th>Isi Konten (Singkat)</th>
+                                    <th>Pengguna</th>
+                                    <th>Tanggal</th>
+                                    <th>Status</th>
+                                    <th class="text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-id="1" data-status="dilaporkan">
+                                    <td><input class="form-check-input" type="checkbox" value="1"></td>
+                                    <td><span class="badge bg-secondary">Balasan</span></td>
+                                    <td>
+                                        <strong class="d-block topic-title">Pada: "Review Buku Bumi Manusia"</strong>
+                                        <small class="text-muted konten-diskusi">"Ini buku paling tidak jelas sedunia!!! Sangat menyesal..."</small>
+                                    </td>
+                                    <td class="pengguna-diskusi">UserNakals123</td>
+                                    <td>26 Mei 2025</td>
+                                    <td class="status-diskusi"><span class="badge bg-danger">Dilaporkan (Spam)</span></td>
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-success me-1" title="Setujui" onclick="konfirmasiAksiModerasi('setujui', 1, 'postingan ini', this)"><i class="bi bi-check-lg"></i></button>
+                                        <button class="btn btn-sm btn-warning me-1" title="Edit" onclick="openEditModal(1, this)"><i class="bi bi-pencil-square"></i></button>
+                                        <button class="btn btn-sm btn-danger" title="Hapus" onclick="konfirmasiAksiModerasi('hapus', 1, 'postingan ini', this)"><i class="bi bi-trash-fill"></i></button>
+                                    </td>
+                                </tr>
+                                <tr data-id="2" data-status="pending">
+                                    <td><input class="form-check-input" type="checkbox" value="2"></td>
+                                    <td><span class="badge bg-info">Topik Baru</span></td>
+                                    <td>
+                                        <strong class="d-block topic-title">"Jual Buku Bekas Murah Meriah Koleksi Pribadi"</strong>
+                                        <small class="text-muted konten-diskusi">"Halo guys, saya mau jual koleksi buku fiksi dan non-fiksi..."</small>
+                                    </td>
+                                    <td class="pengguna-diskusi">MahasiswaJualan</td>
+                                    <td>27 Mei 2025</td>
+                                    <td class="status-diskusi"><span class="badge bg-warning text-dark">Pending</span></td>
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-success me-1" title="Setujui" onclick="konfirmasiAksiModerasi('setujui', 2, 'postingan ini', this)"><i class="bi bi-check-lg"></i></button>
+                                        <button class="btn btn-sm btn-warning me-1" title="Edit" onclick="openEditModal(2, this)" disabled><i class="bi bi-pencil-square"></i></button> <button class="btn btn-sm btn-danger" title="Tolak" onclick="konfirmasiAksiModerasi('tolak', 2, 'postingan ini', this)"><i class="bi bi-x-lg"></i></button>
+                                    </td>
+                                </tr>
+                                <tr data-id="3" data-status="disetujui">
+                                    <td><input class="form-check-input" type="checkbox" value="3"></td>
+                                    <td><span class="badge bg-secondary">Balasan</span></td>
+                                    <td>
+                                        <strong class="d-block topic-title">Pada: "Rekomendasi Buku Sci-Fi"</strong>
+                                        <small class="text-muted konten-diskusi">"Coba baca The Three-Body Problem, keren banget!"</small>
+                                    </td>
+                                    <td class="pengguna-diskusi">PecintaSciFi</td>
+                                    <td>25 Mei 2025</td>
+                                    <td class="status-diskusi"><span class="badge bg-success">Disetujui</span></td>
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-warning me-1" title="Edit" onclick="openEditModal(3, this)"><i class="bi bi-pencil-square"></i></button>
+                                        <button class="btn btn-sm btn-outline-danger" title="Hapus" onclick="konfirmasiAksiModerasi('hapus', 3, 'postingan ini', this)"><i class="bi bi-trash-fill"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                         <p id="noResultsDiskusi" class="text-center text-muted mt-3" style="display: none;">Tidak ada postingan yang cocok.</p>
+                    </div>
+                    <div class="mt-3">
+                        <button class="btn btn-sm btn-outline-danger" onclick="konfirmasiAksiModerasiMassal('hapus')"><i class="bi bi-trash-fill me-1"></i> Hapus yang Dipilih</button>
+                        <button class="btn btn-sm btn-outline-success" onclick="aksiModerasiMassal('setujui')"><i class="bi bi-check-circle-fill me-1"></i> Setujui yang Dipilih</button>
+                        <button class="btn btn-sm btn-outline-warning" onclick="aksiModerasiMassal('pending')"><i class="bi bi-hourglass-split me-1"></i> Jadikan Pending yang Dipilih</button>
+                    </div>
+                </div>
+                 <div class="card-footer d-flex justify-content-end">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination mb-0">
+                            <li class="page-item disabled"><a class="page-link" href="#">Sebelumnya</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">Berikutnya</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal fade" id="konfirmasiModerasiModal" tabindex="-1" aria-labelledby="konfirmasiModerasiModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="konfirmasiModerasiModalLabel">Konfirmasi Tindakan</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="konfirmasiModerasiModalBody">
+            </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="button" class="btn btn-danger" id="tombolKonfirmasiModerasi">Ya, Lanjutkan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="editPostinganModal" tabindex="-1" aria-labelledby="editPostinganModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editPostinganModalLabel">Edit Postingan Diskusi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formEditPostingan">
+                        <input type="hidden" id="editPostId">
+                        <div class="mb-3">
+                            <label for="editTopicTitle" class="form-label">Judul Topik/Konteks</label>
+                            <input type="text" class="form-control" id="editTopicTitle" readonly disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editKontenDiskusi" class="form-label">Isi Konten <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="editKontenDiskusi" rows="5" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editPenggunaDiskusi" class="form-label">Pengguna</label>
+                            <input type="text" class="form-control" id="editPenggunaDiskusi" readonly disabled>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" onclick="simpanEditPostingan()">Simpan Perubahan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function showToast(message, type = 'success') {
+            const toastContainer = document.querySelector('.toast-container');
+            if (!toastContainer) { return; }
+            const toastId = 'toast-' + Math.random().toString(36).substr(2, 9);
+            let bgClass = 'bg-success';
+            if (type === 'error') bgClass = 'bg-danger';
+            if (type === 'warning') bgClass = 'bg-warning text-dark';
+            if (type === 'info') bgClass = 'bg-info text-dark';
+
+            const toastHTML = `
+                <div id="${toastId}" class="toast align-items-center text-white ${bgClass} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            ${message}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            `;
+            toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+            const toastElement = document.getElementById(toastId);
+            const toast = new bootstrap.Toast(toastElement, { delay: 3000 });
+            toast.show();
+            toastElement.addEventListener('hidden.bs.toast', () => {
+                toastElement.remove();
+            });
+        }
+
+        function showLogoutToastAndRedirect() {
+            showToast('Anda telah logout. Mengarahkan kembali ke halaman login.', 'info');
+            setTimeout(() => {
+                window.location.href = 'login_utama.html';
+            }, 1500);
+        }
+
+        const sidebarToggleModerasi = document.getElementById('sidebarToggleModerasi');
+        if (sidebarToggleModerasi) {
+             sidebarToggleModerasi.addEventListener('click', function(event) {
+                event.preventDefault();
+                document.querySelector('.admin-sidebar').classList.toggle('collapsed');
+                document.querySelector('.admin-content').classList.toggle('expanded');
+                document.querySelector('.admin-navbar').classList.toggle('expanded');
+            });
+        }
+
+        let moderationAction = null;
+        let moderationItemId = null;
+        let moderationElement = null;
+        let isMassAction = false;
+        let selectedItemsForMassAction = [];
+        let editPostinganModalInstance = null; // Variabel untuk instance modal edit
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStatusCounts();
+            filterDiskusi();
+            // Inisialisasi instance modal edit
+            const editModalElement = document.getElementById('editPostinganModal');
+            if (editModalElement) {
+                editPostinganModalInstance = new bootstrap.Modal(editModalElement);
+            }
+        });
+
+        function konfirmasiAksiModerasi(aksi, postId, itemDeskripsi, buttonElement) {
+            isMassAction = false;
+            moderationAction = aksi;
+            moderationItemId = postId;
+            moderationElement = buttonElement; // Menyimpan elemen tombol untuk mencari baris
+            document.getElementById('konfirmasiModerasiModalBody').innerText = `Apakah Anda yakin ingin ${aksi} ${itemDeskripsi} (ID: ${postId})?`;
+            let btnClass = 'danger';
+            if (aksi === 'setujui') btnClass = 'success';
+            else if (aksi === 'pending') btnClass = 'warning';
+
+            const confirmButton = document.getElementById('tombolKonfirmasiModerasi');
+            confirmButton.className = `btn btn-${btnClass}`;
+            confirmButton.innerText = `Ya, ${aksi.charAt(0).toUpperCase() + aksi.slice(1)}`;
+
+            const konfirmasiModal = new bootstrap.Modal(document.getElementById('konfirmasiModerasiModal'));
+            konfirmasiModal.show();
+        }
+
+        function konfirmasiAksiModerasiMassal(aksi) {
+            selectedItemsForMassAction = Array.from(document.querySelectorAll('#tabelModerasiDiskusi tbody .form-check-input:checked'));
+            if (selectedItemsForMassAction.length === 0) {
+                showToast('Pilih setidaknya satu postingan.', 'warning');
+                return;
+            }
+            isMassAction = true;
+            moderationAction = aksi;
+            document.getElementById('konfirmasiModerasiModalBody').innerText = `Apakah Anda yakin ingin ${aksi} ${selectedItemsForMassAction.length} postingan yang dipilih?`;
+            let btnClass = 'danger';
+            if (aksi === 'setujui') btnClass = 'success';
+            else if (aksi === 'pending') btnClass = 'warning';
+            
+            const confirmButton = document.getElementById('tombolKonfirmasiModerasi');
+            confirmButton.className = `btn btn-${btnClass}`;
+            confirmButton.innerText = `Ya, ${aksi.charAt(0).toUpperCase() + aksi.slice(1)} ${selectedItemsForMassAction.length} Item`;
+
+            const konfirmasiModal = new bootstrap.Modal(document.getElementById('konfirmasiModerasiModal'));
+            konfirmasiModal.show();
+        }
+
+
+        document.getElementById('tombolKonfirmasiModerasi').addEventListener('click', function() {
+            const konfirmasiModalEl = document.getElementById('konfirmasiModerasiModal');
+            const modalInstance = bootstrap.Modal.getInstance(konfirmasiModalEl);
+
+            if (isMassAction) {
+                selectedItemsForMassAction.forEach(cb => {
+                    const row = cb.closest('tr');
+                    const postId = row.dataset.id;
+                    // Untuk aksi massal, kita hanya perlu memproses, tidak perlu mencari elemen tombol individual
+                    prosesAksiModerasi(moderationAction, postId, row.querySelector('.status-diskusi'), row, true);
+                    cb.checked = false;
+                });
+                showToast(`${selectedItemsForMassAction.length} postingan telah di-${moderationAction}.`, 'success');
+                document.getElementById('selectAllPostsModerasi').checked = false;
+            } else {
+                 const row = moderationElement ? moderationElement.closest('tr') : document.querySelector(`tr[data-id="${moderationItemId}"]`);
+                 const statusCell = row ? row.querySelector('.status-diskusi') : null;
+                prosesAksiModerasi(moderationAction, moderationItemId, statusCell, row);
+            }
+
+            if(modalInstance) modalInstance.hide();
+            updateStatusCounts();
+            filterDiskusi(); // Terapkan filter ulang untuk memperbarui tampilan
+            moderationAction = null;
+            moderationItemId = null;
+            moderationElement = null; // Reset elemen
+            isMassAction = false;
+            selectedItemsForMassAction = [];
+        });
+
+        function prosesAksiModerasi(aksi, postId, statusCell, row, silent = false) {
+            let pesanAksi = '';
+            if (!row) { // Jika baris tidak ditemukan (misal, sudah dihapus)
+                if (!silent) showToast(`Postingan ID: ${postId} tidak ditemukan atau sudah diproses.`, 'warning');
+                return;
+            }
+
+            switch(aksi) {
+                case 'setujui':
+                    pesanAksi = 'disetujui';
+                    if(statusCell) {
+                        statusCell.innerHTML = '<span class="badge bg-success">Disetujui</span>';
+                        row.dataset.status = 'disetujui';
+                        row.classList.remove('table-danger', 'table-warning');
+                    }
+                    break;
+                case 'tolak':
+                case 'hapus':
+                    pesanAksi = (aksi === 'tolak') ? 'ditolak dan dihapus' : 'dihapus';
+                    row.remove(); // Hapus baris dari tabel
+                    break;
+                // Kasus 'edit' akan ditangani oleh openEditModal dan simpanEditPostingan
+                case 'pending':
+                    pesanAksi = 'dijadikan pending';
+                     if(statusCell) {
+                        statusCell.innerHTML = '<span class="badge bg-warning text-dark">Pending</span>';
+                        row.dataset.status = 'pending';
+                        row.classList.remove('table-danger');
+                        row.classList.add('table-warning'); // Tambahkan class warning jika relevan
+                    }
+                    break;
+                default: pesanAksi = 'diproses';
+            }
+            if (!silent) {
+                showToast(`Postingan (ID: ${postId}) telah ${pesanAksi}.`, 'success');
+            }
+        }
+
+        function openEditModal(postId, buttonElement) {
+            moderationItemId = postId; // Simpan ID untuk digunakan saat menyimpan
+            const row = buttonElement.closest('tr');
+            if (!row) {
+                showToast('Tidak dapat menemukan data postingan.', 'error');
+                return;
+            }
+
+            const topicTitle = row.querySelector('.topic-title') ? row.querySelector('.topic-title').innerText : 'N/A';
+            const kontenDiskusi = row.querySelector('.konten-diskusi') ? row.querySelector('.konten-diskusi').innerText : '';
+            const penggunaDiskusi = row.querySelector('.pengguna-diskusi') ? row.querySelector('.pengguna-diskusi').innerText : 'N/A';
+
+            document.getElementById('editPostId').value = postId;
+            document.getElementById('editTopicTitle').value = topicTitle;
+            document.getElementById('editKontenDiskusi').value = kontenDiskusi;
+            document.getElementById('editPenggunaDiskusi').value = penggunaDiskusi;
+
+            if (editPostinganModalInstance) {
+                editPostinganModalInstance.show();
+            }
+        }
+
+        function simpanEditPostingan() {
+            const postId = document.getElementById('editPostId').value;
+            const newKonten = document.getElementById('editKontenDiskusi').value.trim();
+
+            if (newKonten === '') {
+                showToast('Isi konten tidak boleh kosong.', 'error');
+                return;
+            }
+
+            // Cari baris di tabel berdasarkan postId
+            const rowToUpdate = document.querySelector(`#tabelModerasiDiskusi tbody tr[data-id="${postId}"]`);
+            if (rowToUpdate) {
+                const kontenCell = rowToUpdate.querySelector('.konten-diskusi');
+                if (kontenCell) {
+                    kontenCell.innerText = newKonten;
+                }
+                showToast(`Postingan (ID: ${postId}) berhasil diperbarui.`, 'success');
+            } else {
+                showToast(`Gagal menemukan postingan (ID: ${postId}) di tabel.`, 'error');
+            }
+
+            if (editPostinganModalInstance) {
+                editPostinganModalInstance.hide();
+            }
+            document.getElementById('formEditPostingan').reset();
+        }
+
+        function toggleSelectAllModerasi(checked) {
+            const checkboxes = document.querySelectorAll('#tabelModerasiDiskusi tbody .form-check-input');
+            checkboxes.forEach(cb => {
+                // Hanya centang checkbox pada baris yang terlihat (tidak di-filter)
+                if(cb.closest('tr').style.display !== 'none'){
+                     cb.checked = checked;
+                }
+            });
+        }
+
+        function filterDiskusi() {
+            const searchTerm = document.getElementById('searchDiskusi').value.toLowerCase();
+            const filterStatus = document.querySelector('input[name="filterModerasiRadio"]:checked').value;
+            const tabelBody = document.getElementById('tabelModerasiDiskusi').getElementsByTagName('tbody')[0];
+            const rows = tabelBody.getElementsByTagName('tr');
+            let found = false;
+
+            for (let i = 0; i < rows.length; i++) {
+                const topicTitleElement = rows[i].querySelector('.topic-title');
+                const kontenElement = rows[i].querySelector('.konten-diskusi');
+                const penggunaElement = rows[i].querySelector('.pengguna-diskusi');
+
+                const topicTitle = topicTitleElement ? topicTitleElement.textContent.toLowerCase() : '';
+                const konten = kontenElement ? kontenElement.textContent.toLowerCase() : '';
+                const pengguna = penggunaElement ? penggunaElement.textContent.toLowerCase() : '';
+                const statusRow = rows[i].dataset.status;
+
+                const matchSearch = topicTitle.includes(searchTerm) || konten.includes(searchTerm) || pengguna.includes(searchTerm);
+                const matchStatus = filterStatus === 'semua' || statusRow === filterStatus;
+
+                if (matchSearch && matchStatus) {
+                    rows[i].style.display = "";
+                    found = true;
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+            document.getElementById('noResultsDiskusi').style.display = found ? "none" : "";
+            // Uncheck "select all" jika filter berubah
+            document.getElementById('selectAllPostsModerasi').checked = false;
+        }
+
+        function updateStatusCounts() {
+            const rows = document.querySelectorAll('#tabelModerasiDiskusi tbody tr');
+            let countLaporan = 0;
+            let countPending = 0;
+            rows.forEach(row => {
+                // Cek status asli, bukan yang mungkin sudah berubah di UI sebelum refresh dari server
+                // Untuk simulasi frontend, kita tetap gunakan dataset.status
+                if (row.dataset.status === 'dilaporkan') countLaporan++;
+                if (row.dataset.status === 'pending') countPending++;
+            });
+            document.getElementById('countLaporan').textContent = countLaporan;
+            document.getElementById('countPending').textContent = countPending;
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Aktivitas - Admin LiterasiKita</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .toast-container {
+            z-index: 1100;
+        }
+    </style>
+</head>
+<body>
+    <div class="toast-container position-fixed top-0 end-0 p-3"></div>
+
+    <div class="admin-sidebar">
+        <div class="admin-brand"><i class="bi bi-shield-lock-fill"></i> Admin Panel</div>
+        <nav class="nav flex-column">
+            <a class="nav-link" href="admin_dashboard.html"><i class="bi bi-house-door-fill"></i> Dashboard</a>
+            <a class="nav-link" href="admin_manajemen_buku.html"><i class="bi bi-book-fill"></i> Manajemen Buku</a>
+            <a class="nav-link" href="admin_moderasi_diskusi.html"><i class="bi bi-chat-left-text-fill"></i> Moderasi Diskusi</a>
+            <a class="nav-link active" aria-current="page" href="admin_laporan_aktivitas.html"><i class="bi bi-graph-up-arrow"></i> Laporan Aktivitas</a>
+            <a class="nav-link" href="admin_manajemen_tantangan.html"><i class="bi bi-trophy-fill"></i> Manajemen Tantangan</a>
+            <a class="nav-link mt-auto logout-link" href="#" onclick="event.preventDefault(); showLogoutToastAndRedirect();">
+                <i class="bi bi-box-arrow-right"></i> Logout
+            </a>
+        </nav>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light admin-navbar sticky-top shadow-sm">
+        <div class="container-fluid">
+            <button class="btn btn-light d-md-none me-2" id="sidebarToggleLaporan"><i class="bi bi-list"></i></button>
+            <span class="navbar-brand mb-0 h1">Laporan Aktivitas Pengguna</span>
+        </div>
+    </nav>
+
+    <main class="admin-content">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Ringkasan Aktivitas</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="btn-group me-2" role="group" id="periodeFilterGroup">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" id="btnHarian">Harian</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" id="btnMingguan">Mingguan</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary active" id="btnBulanan">Bulanan</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" id="btnTahunan">Tahunan</button>
+                    </div>
+                    <input type="date" class="form-control form-control-sm" id="tanggalLaporan" style="width: auto;" value="2025-05-27">
+                    <button type="button" class="btn btn-sm btn-outline-primary ms-2" onclick="eksporLaporan()"><i class="bi bi-download me-1"></i> Ekspor Laporan</button>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card text-center shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title" id="titlePenggunaAktif">Pengguna Aktif Bulan Ini</h5>
+                            <p class="card-text display-4 text-primary" id="valuePenggunaAktif">1,258</p>
+                            <p class="card-text"><small class="text-success" id="trendPenggunaAktif"><i class="bi bi-arrow-up"></i> 5.2% dari periode lalu</small></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-center shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title" id="titleDiskusiBaru">Diskusi Baru Dibuat</h5>
+                            <p class="card-text display-4 text-success" id="valueDiskusiBaru">312</p>
+                             <p class="card-text"><small class="text-danger" id="trendDiskusiBaru"><i class="bi bi-arrow-down"></i> 1.8% dari periode lalu</small></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                     <div class="card text-center shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title" id="titleBukuDitambahkan">Buku Ditambahkan ke Rak</h5>
+                            <p class="card-text display-4 text-info" id="valueBukuDitambahkan">780</p>
+                            <p class="card-text"><small class="text-success" id="trendBukuDitambahkan"><i class="bi bi-arrow-up"></i> 10% dari periode lalu</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0" id="chartTitle">Grafik Pertumbuhan Pengguna (Bulanan)</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="userGrowthChart"></canvas>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h5 class="mb-0">Log Aktivitas Pengguna Terbaru</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Waktu</th>
+                                    <th>Pengguna</th>
+                                    <th>Aksi</th>
+                                    <th>Detail</th>
+                                    <th>IP Address</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2025-05-27 10:30:15</td>
+                                    <td>user_mahasiswa_1</td>
+                                    <td>Membuat Topik Diskusi</td>
+                                    <td>"Review Buku Bumi Manusia"</td>
+                                    <td>192.168.1.10</td>
+                                </tr>
+                                <tr>
+                                    <td>2025-05-27 09:15:00</td>
+                                    <td>AdminSatu</td>
+                                    <td>Menambah Buku Baru</td>
+                                    <td>"Seni Produktivitas Mahasiswa"</td>
+                                    <td>10.0.0.5</td>
+                                </tr>
+                                <tr>
+                                    <td>2025-05-26 15:12:30</td>
+                                    <td>user_mahasiswa_2</td>
+                                    <td>Menandai Buku Selesai Dibaca</td>
+                                    <td>"Laskar Pelangi"</td>
+                                    <td>202.54.11.2</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="#" class="btn btn-outline-primary">Lihat Semua Log Aktivitas</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // --- Fungsi Toast dan Logout ---
+        function showToast(message, type = 'success') { /* ... (sama seperti sebelumnya) ... */ 
+            const toastContainer = document.querySelector('.toast-container');
+            if (!toastContainer) { 
+                console.warn('Toast container not found. Displaying alert instead.');
+                alert(message);
+                return;
+            }
+            const toastId = 'toast-' + Math.random().toString(36).substr(2, 9);
+            let bgClass = 'bg-success'; 
+            if (type === 'error') bgClass = 'bg-danger';
+            if (type === 'warning') bgClass = 'bg-warning text-dark';
+            if (type === 'info') bgClass = 'bg-info text-dark';
+
+            const toastHTML = `
+                <div id="${toastId}" class="toast align-items-center text-white ${bgClass} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            ${message}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            `;
+            toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+            
+            const toastElement = document.getElementById(toastId);
+            const toast = new bootstrap.Toast(toastElement, { delay: 3000 });
+            toast.show();
+            toastElement.addEventListener('hidden.bs.toast', () => { 
+                toastElement.remove();
+            });
+        }
+        function showLogoutToastAndRedirect() { /* ... (sama seperti sebelumnya) ... */
+            showToast('Anda telah logout. Mengarahkan kembali ke halaman login.', 'info');
+            setTimeout(() => {
+                window.location.href = 'login_utama.html';
+            }, 1500);
+        }
+        const sidebarToggleLaporan = document.getElementById('sidebarToggleLaporan');
+        if (sidebarToggleLaporan) { /* ... (sama seperti sebelumnya) ... */
+            sidebarToggleLaporan.addEventListener('click', function(event) {
+                event.preventDefault();
+                document.querySelector('.admin-sidebar').classList.toggle('collapsed');
+                document.querySelector('.admin-content').classList.toggle('expanded');
+                document.querySelector('.admin-navbar').classList.toggle('expanded');
+            });
+        }
+        function eksporLaporan() {
+            showToast('Fitur ekspor laporan belum diimplementasikan.', 'info');
+        }
+
+        // --- Chart.js dan Filter Periode ---
+        let userGrowthChart; // Variabel untuk menyimpan instance chart
+
+        // Data contoh untuk berbagai periode
+        const chartDataStore = {
+            harian: {
+                labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+                data: [10, 12, 9, 15, 13, 18, 20], // Pengguna baru per hari
+                title: 'Pertumbuhan Pengguna (Minggu Ini)',
+                statTitle: 'Pengguna Aktif Hari Ini',
+                statValue: '150',
+                statTrend: '<i class="bi bi-arrow-up"></i> 2% dari kemarin'
+            },
+            mingguan: {
+                labels: ['Minggu 1', 'Minggu 2', 'Minggu 3', 'Minggu 4'],
+                data: [50, 60, 55, 70], // Pengguna baru per minggu
+                title: 'Pertumbuhan Pengguna (Bulan Ini - Mingguan)',
+                statTitle: 'Pengguna Aktif Minggu Ini',
+                statValue: '850',
+                statTrend: '<i class="bi bi-arrow-down"></i> 1% dari minggu lalu'
+            },
+            bulanan: {
+                labels: ['Des 24', 'Jan 25', 'Feb 25', 'Mar 25', 'Apr 25', 'Mei 25'],
+                data: [500, 650, 800, 950, 1100, 1258], // Total pengguna per bulan
+                title: 'Pertumbuhan Pengguna (6 Bulan Terakhir)',
+                statTitle: 'Pengguna Aktif Bulan Ini',
+                statValue: '1,258',
+                statTrend: '<i class="bi bi-arrow-up"></i> 5.2% dari bulan lalu'
+            },
+            tahunan: {
+                labels: ['2022', '2023', '2024', '2025'],
+                data: [2000, 5000, 9000, 12000], // Total pengguna per tahun
+                title: 'Pertumbuhan Pengguna (Tahunan)',
+                statTitle: 'Pengguna Aktif Tahun Ini',
+                statValue: '12,345',
+                statTrend: '<i class="bi bi-arrow-up"></i> 15% dari tahun lalu'
+            }
+        };
+
+        function updateChartAndStats(periode) {
+            const selectedData = chartDataStore[periode];
+            if (!selectedData || !userGrowthChart) return;
+
+            // Update Chart
+            userGrowthChart.data.labels = selectedData.labels;
+            userGrowthChart.data.datasets[0].data = selectedData.data;
+            userGrowthChart.data.datasets[0].label = `Jumlah Pengguna (${periode.charAt(0).toUpperCase() + periode.slice(1)})`;
+            userGrowthChart.options.plugins.title.text = selectedData.title; // Update judul chart jika perlu
+            userGrowthChart.update();
+            document.getElementById('chartTitle').innerText = selectedData.title;
+
+
+            // Update Statistik Cards (contoh untuk Pengguna Aktif)
+            document.getElementById('titlePenggunaAktif').innerText = selectedData.statTitle;
+            document.getElementById('valuePenggunaAktif').innerText = selectedData.statValue;
+            document.getElementById('trendPenggunaAktif').innerHTML = selectedData.statTrend;
+            
+            // Anda bisa menambahkan update untuk kartu statistik lainnya dengan cara serupa
+            // Misalnya, jika Anda punya data berbeda untuk "Diskusi Baru" per periode
+            document.getElementById('titleDiskusiBaru').innerText = `Diskusi Baru (${periode.charAt(0).toUpperCase() + periode.slice(1)})`;
+            // Ganti value dan trend diskusi sesuai data periode yang dipilih
+            // document.getElementById('valueDiskusiBaru').innerText = ...; 
+            // document.getElementById('trendDiskusiBaru').innerHTML = ...;
+
+            document.getElementById('titleBukuDitambahkan').innerText = `Buku Ditambahkan (${periode.charAt(0).toUpperCase() + periode.slice(1)})`;
+        }
+
+        function setActiveFilterButton(activeButtonId) {
+            const buttons = document.querySelectorAll('#periodeFilterGroup .btn');
+            buttons.forEach(button => {
+                button.classList.remove('active');
+            });
+            document.getElementById(activeButtonId).classList.add('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const ctx = document.getElementById('userGrowthChart');
+            if (ctx) {
+                userGrowthChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: [], // Akan diisi oleh updateChartAndStats
+                        datasets: [{
+                            label: '', // Akan diisi oleh updateChartAndStats
+                            data: [],  // Akan diisi oleh updateChartAndStats
+                            borderColor: 'rgb(0, 123, 255)',
+                            backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                            tension: 0.1,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { beginAtZero: true, title: { display: true, text: 'Jumlah Pengguna' } },
+                            x: { title: { display: true, text: 'Periode' } }
+                        },
+                        plugins: { 
+                            legend: { display: true, position: 'top' },
+                            tooltip: { mode: 'index', intersect: false },
+                            title: { display: true, text: '' } // Judul Chart akan diupdate dinamis
+                        }
+                    }
+                });
+                
+                // Set default view ke Bulanan
+                updateChartAndStats('bulanan'); 
+                setActiveFilterButton('btnBulanan');
+            }
+
+            // Event listeners untuk tombol filter periode
+            document.getElementById('btnHarian').addEventListener('click', function() {
+                setActiveFilterButton('btnHarian');
+                updateChartAndStats('harian');
+            });
+            document.getElementById('btnMingguan').addEventListener('click', function() {
+                setActiveFilterButton('btnMingguan');
+                updateChartAndStats('mingguan');
+            });
+            document.getElementById('btnBulanan').addEventListener('click', function() {
+                setActiveFilterButton('btnBulanan');
+                updateChartAndStats('bulanan');
+            });
+            document.getElementById('btnTahunan').addEventListener('click', function() {
+                setActiveFilterButton('btnTahunan');
+                updateChartAndStats('tahunan');
+            });
+
+            // Anda juga bisa membuat input tanggal mempengaruhi chart,
+            // tapi itu memerlukan logika yang lebih kompleks untuk data statis ini.
+            // document.getElementById('tanggalLaporan').addEventListener('change', function() {
+            //     showToast('Tanggal laporan diubah ke: ' + this.value, 'info');
+            //     // Logika untuk memfilter data berdasarkan tanggal (jika ada data yang sesuai)
+            // });
+        });
+    </script>
+</body>
+</html>

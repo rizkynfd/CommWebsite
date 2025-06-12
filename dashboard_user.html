@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - LiterasiKita</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Anda bisa menambahkan style spesifik untuk dashboard_user.html di sini jika perlu,
+           atau pastikan style.css sudah mencakup semua yang dibutuhkan.
+           .toast-container akan mengambil style dari style.css jika sudah ada. */
+        .toast-container {
+            z-index: 1100; 
+        }
+    </style>
+</head>
+<body>
+    <div class="toast-container position-fixed top-0 end-0 p-3"></div>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="dashboard_user.html"><i class="bi bi-book-half"></i> LiterasiKita</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="dashboard_user.html">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="rekomendasi_user.html">Rekomendasi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="diskusi_user.html">Diskusi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="tantangan_user.html">Tantangan</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="perpustakaan_user.html">Perpustakaan</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle me-1"></i> Nama User Anda 
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownUser">
+                            <li><a class="dropdown-item" href=><i class="bi bi-person-fill me-2"></i>Profil Saya</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-gear-fill me-2"></i>Pengaturan Akun</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item text-danger" href="#" onclick="event.preventDefault(); showLogoutToastAndRedirectDash();">
+                                    <i class="bi bi-box-arrow-right me-2"></i>Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container py-5">
+        <div class="p-5 mb-4 bg-light rounded-3 shadow-sm">
+            <div class="container-fluid py-3">
+                <h1 class="display-5 fw-bold">Selamat Datang Kembali, Nama User Anda!</h1>
+                <p class="col-md-10 fs-4">Ini adalah dashboard pribadimu. Temukan rekomendasi terbaru, lanjutkan tantangan membaca, atau bergabung dalam diskusi seru.</p>
+                <a href="rekomendasi_user.html" class="btn btn-primary btn-lg" type="button"><i class="bi bi-lightbulb-fill me-2"></i> Lihat Rekomendasi</a>
+                <a href="tantangan_user.html" class="btn btn-success btn-lg ms-2" type="button"><i class="bi bi-trophy-fill me-2"></i> Tantangan Saya</a>
+            </div>
+        </div>
+
+        <div class="row align-items-md-stretch">
+            <div class="col-md-6 mb-4">
+                <div class="h-100 p-5 text-white bg-primary rounded-3 shadow">
+                    <h2 class="text-dark">Diskusi Terhangat</h2> 
+                    <p>Jangan lewatkan topik-topik menarik yang sedang dibicarakan komunitas.</p>
+                    <a href="diskusi_user.html" class="btn btn-outline-light" type="button"><i class="bi bi-chat-dots-fill me-2"></i> Kunjungi Forum</a>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="h-100 p-5 bg-light border rounded-3 shadow-sm">
+                    <h2>Perpustakaan Virtual</h2>
+                    <p>Jelajahi ribuan judul buku yang tersedia untuk memperluas wawasanmu.</p>
+                    <a href="perpustakaan_user.html" class="btn btn-outline-secondary" type="button"><i class="bi bi-bookshelf me-2"></i> Jelajahi Katalog</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <h4>Aktivitas Terakhir Anda</h4>
+            <ul class="list-group shadow-sm">
+                <li class="list-group-item">Anda membalas topik "Review Buku Bumi Manusia" - <em>kemarin</em></li>
+                <li class="list-group-item">Anda menandai "Atomic Habits" sebagai sudah dibaca - <em>2 hari lalu</em></li>
+                <li class="list-group-item">Anda bergabung dengan tantangan "Baca 5 Buku Fiksi Lokal" - <em>3 hari lalu</em></li>
+            </ul>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container text-center">
+            <p>&copy; 2025 Komunitas LiterasiKita. Dibuat dengan <i class="bi bi-heart-fill text-danger"></i> untuk mahasiswa Indonesia.</p>
+            <p><a href="#">Kebijakan Privasi</a> | <a href="#">Syarat & Ketentuan</a></p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Fungsi untuk menampilkan toast
+        function showToastDash(message, type = 'success') {
+            const toastContainer = document.querySelector('.toast-container');
+            if (!toastContainer) { 
+                console.warn('Toast container not found. Displaying alert instead.');
+                alert(message); // Fallback jika toast container tidak ada
+                return;
+            }
+            const toastId = 'toast-dash-' + Math.random().toString(36).substr(2, 9); // ID unik
+            let bgClass = 'bg-success'; 
+            if (type === 'error') bgClass = 'bg-danger';
+            if (type === 'warning') bgClass = 'bg-warning text-dark';
+            if (type === 'info') bgClass = 'bg-info text-dark';
+
+            const toastHTML = `
+                <div id="${toastId}" class="toast align-items-center text-white ${bgClass} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            ${message}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            `;
+            toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+            
+            const toastElement = document.getElementById(toastId);
+            const toast = new bootstrap.Toast(toastElement, { delay: 3000 }); // Auto-hide setelah 3 detik
+            toast.show();
+            toastElement.addEventListener('hidden.bs.toast', () => { 
+                toastElement.remove();
+            });
+        }
+
+        function showLogoutToastAndRedirectDash() {
+            showToastDash('Anda telah logout. Mengarahkan kembali ke halaman login.', 'info');
+            setTimeout(() => {
+                window.location.href = 'login_utama.html';
+            }, 1500); // Jeda 1.5 detik agar toast sempat terlihat
+        }
+    </script>
+</body>
+</html>

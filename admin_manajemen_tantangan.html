@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Tantangan - Admin LiterasiKita</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .toast-container {
+            z-index: 1100; 
+        }
+    </style>
+</head>
+<body>
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        </div>
+
+    <div class="admin-sidebar">
+        <div class="admin-brand"><i class="bi bi-shield-lock-fill"></i> Admin Panel</div>
+        <nav class="nav flex-column">
+            <a class="nav-link" href="admin_dashboard.html"><i class="bi bi-house-door-fill"></i> Dashboard</a>
+            <a class="nav-link" href="admin_manajemen_buku.html"><i class="bi bi-book-fill"></i> Manajemen Buku</a>
+            <a class="nav-link" href="admin_moderasi_diskusi.html"><i class="bi bi-chat-left-text-fill"></i> Moderasi Diskusi</a>
+            <a class="nav-link" href="admin_laporan_aktivitas.html"><i class="bi bi-graph-up-arrow"></i> Laporan Aktivitas</a>
+            <a class="nav-link active" aria-current="page" href="admin_manajemen_tantangan.html"><i class="bi bi-trophy-fill"></i> Manajemen Tantangan</a>
+            <a class="nav-link mt-auto logout-link" href="#" onclick="event.preventDefault(); showLogoutToastAndRedirect();">
+                <i class="bi bi-box-arrow-right"></i> Logout
+            </a>
+        </nav>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light admin-navbar sticky-top shadow-sm">
+        <div class="container-fluid">
+            <button class="btn btn-light d-md-none me-2" id="sidebarToggleTantangan"><i class="bi bi-list"></i></button>
+            <span class="navbar-brand mb-0 h1">Manajemen Tantangan Membaca</span>
+        </div>
+    </nav>
+
+    <main class="admin-content">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Daftar Tantangan</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambahTantanganModal">
+                        <i class="bi bi-plus-circle-fill me-2"></i> Buat Tantangan Baru
+                    </button>
+                </div>
+            </div>
+
+            <div class="card shadow">
+                 <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle" id="tabelManajemenTantangan">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nama Tantangan</th>
+                                    <th>Periode</th>
+                                    <th>Target</th>
+                                    <th>Peserta</th>
+                                    <th>Status</th>
+                                    <th class="text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-id="1">
+                                    <td>1</td>
+                                    <td class="nama-tantangan">Baca 5 Buku Fiksi Lokal</td>
+                                    <td class="periode-tantangan">1 Jun - 30 Jun 2025</td>
+                                    <td class="target-tantangan">5 Buku</td>
+                                    <td>120</td>
+                                    <td class="status-tantangan"><span class="badge bg-primary">Aktif</span></td>
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-info me-1" title="Lihat Peserta" onclick="lihatPeserta(1)"><i class="bi bi-people-fill"></i></button>
+                                        <button class="btn btn-sm btn-warning me-1" title="Edit" data-bs-toggle="modal" data-bs-target="#editTantanganModal" onclick="isiFormEditTantangan(1, 'Baca 5 Buku Fiksi Lokal', 'Deskripsi detail tantangan fiksi lokal...', '2025-06-01', '2025-06-30', '5 Buku', 'Fiksi Lokal')"><i class="bi bi-pencil-square"></i></button>
+                                        <button class="btn btn-sm btn-danger" title="Hapus" onclick="konfirmasiHapusTantangan(1, 'Baca 5 Buku Fiksi Lokal', this)"><i class="bi bi-trash-fill"></i></button>
+                                    </td>
+                                </tr>
+                                 <tr data-id="2">
+                                    <td>2</td>
+                                    <td class="nama-tantangan">Eksplorasi Non-Fiksi</td>
+                                    <td class="periode-tantangan">15 Mei - 15 Jun 2025</td>
+                                    <td class="target-tantangan">3 Buku (Sejarah/Sains/Biografi)</td>
+                                    <td>85</td>
+                                    <td class="status-tantangan"><span class="badge bg-primary">Aktif</span></td>
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-info me-1" title="Lihat Peserta" onclick="lihatPeserta(2)"><i class="bi bi-people-fill"></i></button>
+                                        <button class="btn btn-sm btn-warning me-1" title="Edit" data-bs-toggle="modal" data-bs-target="#editTantanganModal" onclick="isiFormEditTantangan(2, 'Eksplorasi Non-Fiksi', 'Deskripsi tantangan non-fiksi...', '2025-05-15', '2025-06-15', '3 Buku (Sejarah/Sains/Biografi)', 'Non-Fiksi')"><i class="bi bi-pencil-square"></i></button>
+                                        <button class="btn btn-sm btn-danger" title="Hapus" onclick="konfirmasiHapusTantangan(2, 'Eksplorasi Non-Fiksi', this)"><i class="bi bi-trash-fill"></i></button>
+                                    </td>
+                                </tr>
+                                <tr data-id="3">
+                                    <td>3</td>
+                                    <td class="nama-tantangan">Tantangan Awal Tahun</td>
+                                    <td class="periode-tantangan">1 Jan - 31 Mar 2025</td>
+                                    <td class="target-tantangan">10 Buku</td>
+                                    <td>250</td>
+                                    <td class="status-tantangan"><span class="badge bg-success">Selesai</span></td>
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-info me-1" title="Lihat Arsip" onclick="lihatPeserta(3, true)"><i class="bi bi-archive-fill"></i></button>
+                                        <button class="btn btn-sm btn-secondary me-1 disabled" title="Edit"><i class="bi bi-pencil-square"></i></button>
+                                        <button class="btn btn-sm btn-secondary disabled" title="Hapus"><i class="bi bi-trash-fill"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                 <div class="card-footer d-flex justify-content-end">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination mb-0">
+                            <li class="page-item disabled"><a class="page-link" href="#">Sebelumnya</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">Berikutnya</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal fade" id="tambahTantanganModal" tabindex="-1" aria-labelledby="tambahTantanganModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tambahTantanganModalLabel">Buat Tantangan Membaca Baru</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formTambahTantangan">
+                        <div class="mb-3">
+                            <label for="namaTantangan" class="form-label">Nama Tantangan <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="namaTantangan" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="deskripsiTantangan" class="form-label">Deskripsi Singkat <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="deskripsiTantangan" rows="3" required></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="tglMulai" class="form-label">Tanggal Mulai <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="tglMulai" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="tglSelesai" class="form-label">Tanggal Selesai <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="tglSelesai" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="targetTantangan" class="form-label">Target (misal: 5 Buku, 1000 Halaman) <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="targetTantangan" placeholder="Contoh: 5 Buku" required>
+                        </div>
+                         <div class="mb-3">
+                            <label for="kriteriaTantangan" class="form-label">Kriteria Buku (Opsional, pisahkan dengan koma)</label>
+                            <input type="text" class="form-control" id="kriteriaTantangan" placeholder="Contoh: Genre Fiksi Lokal, Penulis Asia">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" onclick="simpanTantangan('tambah')">Simpan Tantangan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <div class="modal fade" id="editTantanganModal" tabindex="-1" aria-labelledby="editTantanganModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editTantanganModalLabel">Edit Tantangan Membaca</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formEditTantangan">
+                         <input type="hidden" id="editChallengeId">
+                         <div class="mb-3">
+                            <label for="editNamaTantangan" class="form-label">Nama Tantangan <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="editNamaTantangan" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editDeskripsiTantangan" class="form-label">Deskripsi Singkat <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="editDeskripsiTantangan" rows="3" required></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="editTglMulai" class="form-label">Tanggal Mulai <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="editTglMulai" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editTglSelesai" class="form-label">Tanggal Selesai <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="editTglSelesai" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editTargetTantangan" class="form-label">Target <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="editTargetTantangan" required>
+                        </div>
+                         <div class="mb-3">
+                            <label for="editKriteriaTantangan" class="form-label">Kriteria Buku</label>
+                            <input type="text" class="form-control" id="editKriteriaTantangan">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" onclick="simpanTantangan('edit')">Simpan Perubahan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="konfirmasiHapusModal" tabindex="-1" aria-labelledby="konfirmasiHapusModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="konfirmasiHapusModalLabel">Konfirmasi Penghapusan</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="konfirmasiHapusModalBody">
+            Apakah Anda yakin ingin menghapus tantangan ini?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="button" class="btn btn-danger" id="tombolKonfirmasiHapus">Ya, Hapus</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Fungsi untuk menampilkan toast
+        function showToast(message, type = 'success') {
+            const toastContainer = document.querySelector('.toast-container');
+            if (!toastContainer) { return; } // Pastikan container ada
+            const toastId = 'toast-' + Math.random().toString(36).substr(2, 9);
+            let bgClass = 'bg-success'; 
+            if (type === 'error') bgClass = 'bg-danger';
+            if (type === 'warning') bgClass = 'bg-warning text-dark';
+            if (type === 'info') bgClass = 'bg-info text-dark';
+
+            const toastHTML = `
+                <div id="${toastId}" class="toast align-items-center text-white ${bgClass} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            ${message}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            `;
+            toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+            const toastElement = document.getElementById(toastId);
+            const toast = new bootstrap.Toast(toastElement, { delay: 3000 });
+            toast.show();
+            toastElement.addEventListener('hidden.bs.toast', () => {
+                toastElement.remove();
+            });
+        }
+
+        function showLogoutToastAndRedirect() {
+            showToast('Anda telah logout. Mengarahkan kembali ke halaman login.', 'info');
+            setTimeout(() => {
+                window.location.href = 'login_utama.html';
+            }, 1500);
+        }
+
+        const sidebarToggleTantangan = document.getElementById('sidebarToggleTantangan');
+        if (sidebarToggleTantangan) {
+            sidebarToggleTantangan.addEventListener('click', function(event) {
+                event.preventDefault();
+                document.querySelector('.admin-sidebar').classList.toggle('collapsed');
+                document.querySelector('.admin-content').classList.toggle('expanded');
+                document.querySelector('.admin-navbar').classList.toggle('expanded');
+            });
+        }
+
+        let nextChallengeId = 4; // Untuk ID tantangan baru
+        let challengeToDelete = null; // Menyimpan info tantangan yang akan dihapus
+        let elementToDelete = null; // Menyimpan elemen baris tabel yang akan dihapus
+
+        function simpanTantangan(mode) {
+            const modalId = mode === 'tambah' ? 'tambahTantanganModal' : 'editTantanganModal';
+            const formId = mode === 'tambah' ? 'formTambahTantangan' : 'formEditTantangan';
+            const form = document.getElementById(formId);
+
+            const nama = form.querySelector(mode === 'tambah' ? '#namaTantangan' : '#editNamaTantangan').value.trim();
+            const deskripsi = form.querySelector(mode === 'tambah' ? '#deskripsiTantangan' : '#editDeskripsiTantangan').value.trim();
+            const tglMulai = form.querySelector(mode === 'tambah' ? '#tglMulai' : '#editTglMulai').value;
+            const tglSelesai = form.querySelector(mode === 'tambah' ? '#tglSelesai' : '#editTglSelesai').value;
+            const target = form.querySelector(mode === 'tambah' ? '#targetTantangan' : '#editTargetTantangan').value.trim();
+            const kriteria = form.querySelector(mode === 'tambah' ? '#kriteriaTantangan' : '#editKriteriaTantangan').value.trim();
+            
+            if (!nama || !deskripsi || !tglMulai || !tglSelesai || !target) {
+                showToast('Field dengan tanda bintang (*) wajib diisi!', 'error');
+                return;
+            }
+            
+            const tabelBody = document.getElementById('tabelManajemenTantangan').getElementsByTagName('tbody')[0];
+
+            if (mode === 'tambah') {
+                const newRow = tabelBody.insertRow(0);
+                newRow.setAttribute('data-id', nextChallengeId);
+                // Escape quotes untuk parameter onclick
+                const escapedNama = nama.replace(/'/g, "\\'");
+                const escapedDeskripsi = deskripsi.replace(/'/g, "\\'");
+                const escapedTarget = target.replace(/'/g, "\\'");
+                const escapedKriteria = kriteria.replace(/'/g, "\\'");
+
+                newRow.innerHTML = `
+                    <td>${nextChallengeId}</td>
+                    <td class="nama-tantangan">${nama}</td>
+                    <td class="periode-tantangan">${tglMulai} - ${tglSelesai}</td>
+                    <td class="target-tantangan">${target}</td>
+                    <td>0</td>
+                    <td class="status-tantangan"><span class="badge bg-secondary">Belum Mulai</span></td>
+                    <td class="text-center">
+                        <button class="btn btn-sm btn-info me-1" title="Lihat Peserta" onclick="lihatPeserta(${nextChallengeId})"><i class="bi bi-people-fill"></i></button>
+                        <button class="btn btn-sm btn-warning me-1" title="Edit" data-bs-toggle="modal" data-bs-target="#editTantanganModal" onclick="isiFormEditTantangan(${nextChallengeId}, '${escapedNama}', '${escapedDeskripsi}', '${tglMulai}', '${tglSelesai}', '${escapedTarget}', '${escapedKriteria}')"><i class="bi bi-pencil-square"></i></button>
+                        <button class="btn btn-sm btn-danger" title="Hapus" onclick="konfirmasiHapusTantangan(${nextChallengeId}, '${escapedNama}', this)"><i class="bi bi-trash-fill"></i></button>
+                    </td>
+                `;
+                nextChallengeId++;
+                showToast(`Tantangan "${nama}" berhasil disimpan.`, 'success');
+                form.reset();
+            } else { // Mode Edit
+                const challengeId = document.getElementById('editChallengeId').value;
+                const rowToUpdate = tabelBody.querySelector(`tr[data-id="${challengeId}"]`);
+                if (rowToUpdate) {
+                    const escapedNama = nama.replace(/'/g, "\\'");
+                    const escapedDeskripsi = deskripsi.replace(/'/g, "\\'");
+                    const escapedTarget = target.replace(/'/g, "\\'");
+                    const escapedKriteria = kriteria.replace(/'/g, "\\'");
+
+                    rowToUpdate.querySelector('.nama-tantangan').textContent = nama;
+                    rowToUpdate.querySelector('.periode-tantangan').textContent = `${tglMulai} - ${tglSelesai}`;
+                    rowToUpdate.querySelector('.target-tantangan').textContent = target;
+                    // Status dan peserta tidak diubah di form edit ini untuk simplisitas
+                    rowToUpdate.querySelector('.btn-warning').setAttribute('onclick', `isiFormEditTantangan(${challengeId}, '${escapedNama}', '${escapedDeskripsi}', '${tglMulai}', '${tglSelesai}', '${escapedTarget}', '${escapedKriteria}')`);
+                }
+                showToast(`Tantangan "${nama}" berhasil diperbarui.`, 'success');
+            }
+
+            const modalElement = document.getElementById(modalId);
+            const modalInstance = bootstrap.Modal.getInstance(modalElement);
+            if(modalInstance) modalInstance.hide();
+        }
+
+        function isiFormEditTantangan(id, nama, deskripsi, tglMulai, tglSelesai, target, kriteria) {
+            document.getElementById('editChallengeId').value = id;
+            document.getElementById('editNamaTantangan').value = nama;
+            document.getElementById('editDeskripsiTantangan').value = deskripsi;
+            document.getElementById('editTglMulai').value = tglMulai;
+            document.getElementById('editTglSelesai').value = tglSelesai;
+            document.getElementById('editTargetTantangan').value = target;
+            document.getElementById('editKriteriaTantangan').value = kriteria;
+        }
+
+        function konfirmasiHapusTantangan(id, nama, el) {
+            challengeToDelete = id;
+            elementToDelete = el;
+            document.getElementById('konfirmasiHapusModalBody').innerText = `Apakah Anda yakin ingin menghapus tantangan "${nama}"? Tindakan ini tidak dapat dibatalkan.`;
+            const konfirmasiModal = new bootstrap.Modal(document.getElementById('konfirmasiHapusModal'));
+            konfirmasiModal.show();
+        }
+
+        document.getElementById('tombolKonfirmasiHapus').addEventListener('click', function() {
+            if (challengeToDelete && elementToDelete) {
+                elementToDelete.closest('tr').remove();
+                showToast(`Tantangan (ID: ${challengeToDelete}) telah dihapus.`, 'info');
+                const konfirmasiModalEl = document.getElementById('konfirmasiHapusModal');
+                const modalInstance = bootstrap.Modal.getInstance(konfirmasiModalEl);
+                if(modalInstance) modalInstance.hide();
+                challengeToDelete = null;
+                elementToDelete = null;
+            }
+        });
+        
+        function lihatPeserta(challengeId, isArsip = false){
+            showToast(`Melihat ${isArsip ? 'arsip' : 'peserta'} untuk tantangan ID: ${challengeId}.`, 'info');
+            // Di sini bisa navigasi ke halaman lain atau tampilkan modal dengan daftar peserta
+        }
+    </script>
+</body>
+</html>

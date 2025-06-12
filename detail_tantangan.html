@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Tantangan: Baca 5 Buku Fiksi Lokal - LiterasiKita</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .progress-text { font-size: 0.9rem; }
+        .book-list-challenge img { max-width: 60px; margin-right: 10px; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="dashboard_user.html"><i class="bi bi-book-half"></i> LiterasiKita</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="dashboard_user.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="rekomendasi_user.html">Rekomendasi</a></li>
+                    <li class="nav-item"><a class="nav-link" href="diskusi_user.html">Diskusi</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="tantangan_user.html">Tantangan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="perpustakaan_user.html">Perpustakaan</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle me-1"></i> Nama User Anda
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownUser">
+                            <li><a class="dropdown-item" href="profil_user.html"><i class="bi bi-person-fill me-2"></i>Profil Saya</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-gear-fill me-2"></i>Pengaturan Akun</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="login_utama.html"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container py-5">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="tantangan_user.html" class="text-decoration-none">Tantangan Membaca</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Baca 5 Buku Fiksi Lokal</li>
+            </ol>
+        </nav>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h1 class="h2 mb-0"><i class="bi bi-calendar-check-fill me-2"></i> Baca 5 Buku Fiksi Lokal</h1>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">Tantangan ini mengajakmu untuk menyelesaikan membaca 5 novel karya penulis Indonesia dalam periode 30 hari.</p>
+                        <p><strong>Periode Tantangan:</strong> 1 Juni 2025 - 30 Juni 2025</p>
+                        <p><strong>Deskripsi:</strong><br>
+                            Mari dukung penulis lokal dan eksplorasi kekayaan sastra Indonesia! Pilih 5 buku fiksi (novel, kumpulan cerpen) karya penulis Indonesia dan selesaikan membacanya dalam periode tantangan. Bagikan review singkatmu di forum untuk setiap buku yang selesai dibaca.
+                        </p>
+                        <p><strong>Hadiah (Ilustrasi):</strong> Badge "Pejuang Literasi Lokal" di profil dan poin komunitas.</p>
+
+                        <h4 class="mt-4">Progres Anda:</h4>
+                        <p class="progress-text text-muted">Anda telah membaca <strong id="bukuSelesaiCount">3</strong> dari <strong>5</strong> buku.</p>
+                        <div class="progress mb-3" style="height: 25px;">
+                            <div id="progressBarChallenge" class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 60%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">60%</div>
+                        </div>
+
+                        <h5>Buku yang Telah Anda Baca untuk Tantangan Ini:</h5>
+                        <ul class="list-group book-list-challenge mb-3">
+                            <li class="list-group-item d-flex align-items-center">
+                                <img src="https://via.placeholder.com/60x90?text=Bumi+Manusia" alt="Bumi Manusia" class="img-thumbnail">
+                                <div>
+                                    <strong>Bumi Manusia</strong> - Pramoedya Ananta Toer
+                                    <div><small class="text-muted">Selesai pada: 5 Juni 2025</small></div>
+                                </div>
+                            </li>
+                            <li class="list-group-item d-flex align-items-center">
+                                <img src="https://via.placeholder.com/60x90?text=Cantik+Itu+Luka" alt="Cantik Itu Luka" class="img-thumbnail">
+                                <div>
+                                    <strong>Cantik Itu Luka</strong> - Eka Kurniawan
+                                    <div><small class="text-muted">Selesai pada: 12 Juni 2025</small></div>
+                                </div>
+                            </li>
+                             <li class="list-group-item d-flex align-items-center">
+                                <img src="https://via.placeholder.com/60x90?text=Laskar+Pelangi" alt="Laskar Pelangi" class="img-thumbnail">
+                                <div>
+                                    <strong>Laskar Pelangi</strong> - Andrea Hirata
+                                     <div><small class="text-muted">Selesai pada: 20 Juni 2025</small></div>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateProgresModal"><i class="bi bi-journal-plus me-2"></i> Update Progres / Tambah Buku</button>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h4 class="mb-0">Diskusi Terkait Tantangan Ini</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>Belum ada diskusi. <a href="#">Mulai diskusi baru?</a></p>
+                        </div>
+                </div>
+
+            </div>
+            <div class="col-lg-4">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body text-center">
+                        <i class="bi bi-trophy-fill display-1 text-warning"></i>
+                        <h5 class="mt-2">Status Tantangan Anda</h5>
+                        <p id="statusTantangan" class="fw-bold fs-4 text-primary">Sedang Diikuti</p>
+                        <button id="btnGabungKeluar" class="btn btn-danger w-100"><i class="bi bi-door-open-fill me-2"></i> Keluar dari Tantangan</button>
+                        </div>
+                </div>
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h5 class="mb-0">Peserta Lain (3 Teratas)</h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Mahasiswa Rajin (5/5 Buku) <span class="badge bg-success float-end">Selesai</span></li>
+                        <li class="list-group-item">Kutu Buku Kampus (4/5 Buku)</li>
+                        <li class="list-group-item">Pembaca Cepat (3/5 Buku)</li>
+                    </ul>
+                    <div class="card-footer text-center">
+                        <a href="#">Lihat semua peserta</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal fade" id="updateProgresModal" tabindex="-1" aria-labelledby="updateProgresModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="updateProgresModalLabel">Update Progres Tantangan</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="formUpdateProgres">
+                <div class="mb-3">
+                    <label for="bukuSelesai" class="form-label">Pilih buku yang baru saja Anda selesaikan:</label>
+                    <input type="text" class="form-control" id="bukuSelesai" placeholder="Cari judul buku dari perpustakaan Anda...">
+                    </div>
+                <div class="mb-3">
+                    <label for="tanggalSelesai" class="form-label">Tanggal Selesai Baca</label>
+                    <input type="date" class="form-control" id="tanggalSelesai" valueAsDate="new Date()">
+                </div>
+                <div class="mb-3">
+                    <label for="reviewSingkat" class="form-label">Review Singkat (Opsional)</label>
+                    <textarea class="form-control" id="reviewSingkat" rows="3"></textarea>
+                </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="button" class="btn btn-primary" onclick="simpanProgres()">Simpan Progres</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer mt-auto py-3 bg-dark text-white">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2025 LiterasiKita. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function simpanProgres() {
+            // Simulasi simpan progres
+            const buku = document.getElementById('bukuSelesai').value || "Buku Baru";
+            const tanggal = document.getElementById('tanggalSelesai').value;
+            alert(`Progres untuk buku "${buku}" (selesai ${tanggal}) telah (pura-pura) disimpan!`);
+
+            // Logika untuk update UI (contoh sederhana, perlu lebih canggih)
+            let count = parseInt(document.getElementById('bukuSelesaiCount').innerText);
+            count++;
+            document.getElementById('bukuSelesaiCount').innerText = count;
+            let newProgress = (count / 5) * 100;
+            newProgress = Math.min(newProgress, 100); // Batasi maksimal 100%
+            const progressBar = document.getElementById('progressBarChallenge');
+            progressBar.style.width = newProgress + '%';
+            progressBar.innerText = newProgress.toFixed(0) + '%';
+            progressBar.setAttribute('aria-valuenow', newProgress);
+
+            if (count >= 5) {
+                document.getElementById('statusTantangan').innerText = "SELESAI!";
+                document.getElementById('statusTantangan').classList.remove('text-primary');
+                document.getElementById('statusTantangan').classList.add('text-success');
+                document.getElementById('btnGabungKeluar').classList.add('disabled');
+                document.getElementById('btnGabungKeluar').innerText = "Tantangan Selesai";
+
+            }
+
+            const modalElement = document.getElementById('updateProgresModal');
+            const modalInstance = bootstrap.Modal.getInstance(modalElement);
+            if (modalInstance) {
+                 modalInstance.hide();
+            }
+        }
+    </script>
+</body>
+</html>

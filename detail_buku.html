@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Buku: Atomic Habits - LiterasiKita</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .book-cover-detail {
+            max-width: 300px;
+            height: auto;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+        }
+        .book-meta span {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+        }
+        .book-meta strong {
+            color: var(--text-color);
+        }
+        .nav-tabs .nav-link.active {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            border-color: var(--primary-color);
+        }
+        .nav-tabs .nav-link:hover {
+            border-color: var(--primary-color);
+        }
+        .rating i {
+            color: var(--accent-color); /* Warna bintang rating */
+            cursor: pointer;
+        }
+        .rating .bi-star { color: #e9ecef; } /* Warna bintang kosong */
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="dashboard_user.html"><i class="bi bi-book-half"></i> LiterasiKita</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="dashboard_user.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="rekomendasi_user.html">Rekomendasi</a></li>
+                    <li class="nav-item"><a class="nav-link" href="diskusi_user.html">Diskusi</a></li>
+                    <li class="nav-item"><a class="nav-link" href="tantangan_user.html">Tantangan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="perpustakaan_user.html">Perpustakaan</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle me-1"></i> Nama User Anda
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownUser">
+                            <li><a class="dropdown-item" href="profil_user.html"><i class="bi bi-person-fill me-2"></i>Profil Saya</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-gear-fill me-2"></i>Pengaturan Akun</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item text-danger" href="login_utama.html" onclick="alert('Anda telah logout (simulasi). Mengarahkan kembali ke halaman login.');">
+                                    <i class="bi bi-box-arrow-right me-2"></i>Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container py-5">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="perpustakaan_user.html" class="text-decoration-none">Perpustakaan</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Atomic Habits</li>
+            </ol>
+        </nav>
+
+        <div class="row">
+            <div class="col-md-4 text-center text-md-start mb-4 mb-md-0">
+                <img src="https://via.placeholder.com/300x450?text=Atomic+Habits" alt="Sampul Buku Atomic Habits" class="img-fluid book-cover-detail">
+                <div class="mt-3">
+                    <button class="btn btn-primary w-100 mb-2" onclick="simpanKeRak('inginDibaca', 'Atomic Habits')"><i class="bi bi-bookmark-plus-fill me-2"></i> Tambah ke Ingin Dibaca</button>
+                    <button class="btn btn-outline-success w-100" onclick="simpanKeRak('sudahDibaca', 'Atomic Habits')"><i class="bi bi-check-circle-fill me-2"></i> Tandai Sudah Dibaca</button>
+                </div>
+                 <div class="rating mt-3 text-center">
+                    <strong>Rating Komunitas:</strong>
+                    <div id="communityRatingStars">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-half"></i>
+                        <i class="bi bi-star"></i>
+                    </div>
+                    (4.5 dari 120 suara)
+                </div>
+            </div>
+            <div class="col-md-8">
+                <h1 class="display-5 fw-bold">Atomic Habits: Perubahan Kecil yang Memberikan Hasil Luar Biasa</h1>
+                <p class="lead text-muted">oleh <a href="#" class="text-decoration-none">James Clear</a></p>
+
+                <div class="book-meta mb-3">
+                    <span><strong>Genre:</strong> Pengembangan Diri, Psikologi</span>
+                    <span><strong>Penerbit:</strong> Gramedia Pustaka Utama</span>
+                    <span><strong>Tahun Terbit:</strong> 2019</span>
+                    <span><strong>Jumlah Halaman:</strong> 352 halaman</span>
+                </div>
+
+                <ul class="nav nav-tabs mb-3" id="bookTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="sinopsis-tab" data-bs-toggle="tab" data-bs-target="#sinopsis" type="button" role="tab" aria-controls="sinopsis" aria-selected="true">Sinopsis</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review" type="button" role="tab" aria-controls="review" aria-selected="false">Review Pengguna (<span id="reviewCount">2</span>)</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="diskusi-terkait-tab" data-bs-toggle="tab" data-bs-target="#diskusi-terkait" type="button" role="tab" aria-controls="diskusi-terkait" aria-selected="false">Diskusi Terkait (<span id="discussionCount">2</span>)</button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="bookTabContent">
+                    <div class="tab-pane fade show active p-3 border rounded" id="sinopsis" role="tabpanel" aria-labelledby="sinopsis-tab">
+                        <p>Buku "Atomic Habits" oleh James Clear menawarkan kerangka kerja yang telah terbukti untuk perbaikan diri setiap hari. Clear, seorang ahli terkenal dalam pembentukan kebiasaan, mengungkapkan strategi praktis yang akan mengajarkan Anda cara membentuk kebiasaan baik, menghilangkan kebiasaan buruk, dan menguasai perilaku kecil yang mengarah pada hasil yang luar biasa.</p>
+                        <p>Jika Anda kesulitan mengubah kebiasaan Anda, masalahnya bukan pada Anda. Masalahnya ada pada sistem Anda. Kebiasaan buruk berulang kali bukan karena Anda tidak ingin berubah, tetapi karena Anda memiliki sistem yang salah untuk perubahan. Anda tidak naik ke tingkat tujuan Anda. Anda jatuh ke tingkat sistem Anda. Di sini, Anda akan mendapatkan sistem yang terbukti yang dapat membawa Anda ke tingkat yang baru.</p>
+                    </div>
+                    <div class="tab-pane fade p-3 border rounded" id="review" role="tabpanel" aria-labelledby="review-tab">
+                        <h5>Review dari Pengguna</h5>
+                        <hr>
+                        <div id="reviewList">
+                            <div class="mb-3 border-bottom pb-2">
+                                <strong>Orang Biasa</strong> <span class="text-muted small">- 2 hari lalu</span>
+                                <div class="rating user-rating">
+                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i>
+                                </div>
+                                <p>Buku ini benar-benar mengubah cara pandang saya terhadap produktivitas. Sangat direkomendasikan untuk mahasiswa yang ingin lebih teratur!</p>
+                            </div>
+                            <div class="mb-3">
+                                <strong>Pecinta Buku Sejati</strong> <span class="text-muted small">- 1 minggu lalu</span>
+                                 <div class="rating user-rating">
+                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                </div>
+                                <p>Salah satu buku self-help terbaik yang pernah saya baca. Praktis dan mudah diterapkan.</p>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline-primary mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#formTulisReview" aria-expanded="false" aria-controls="formTulisReview">
+                            <i class="bi bi-pencil-square me-2"></i> Tulis Review Anda
+                        </button>
+                        <div class="collapse mt-3" id="formTulisReview">
+                            <div class="card card-body">
+                                <h5>Tulis Review Anda:</h5>
+                                <form id="formReview">
+                                    <div class="mb-2">
+                                        <label for="ratingAnda" class="form-label">Rating Anda:</label>
+                                        <div id="inputRating" class="rating">
+                                            <i class="bi bi-star" data-value="1"></i> 
+                                            <i class="bi bi-star" data-value="2"></i> 
+                                            <i class="bi bi-star" data-value="3"></i> 
+                                            <i class="bi bi-star" data-value="4"></i> 
+                                            <i class="bi bi-star" data-value="5"></i>
+                                        </div>
+                                        <input type="hidden" id="ratingValue" name="ratingValue">
+                                    </div>
+                                    <div class="mb-2">
+                                        <textarea class="form-control" id="textReview" rows="3" placeholder="Ketik review Anda di sini..." required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-sm btn-success">Kirim Review</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade p-3 border rounded" id="diskusi-terkait" role="tabpanel" aria-labelledby="diskusi-terkait-tab">
+                        <h5>Diskusi Terkait Buku Ini</h5>
+                        <hr>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><a href="detail_diskusi.html" class="text-decoration-none">Bagaimana cara menerapkan Atomic Habits untuk belajar di kampus?</a> <span class="badge bg-secondary">5 balasan</span></li>
+                            <li class="mb-2"><a href="detail_diskusi.html" class="text-decoration-none">Tantangan terbesar saat mencoba membentuk kebiasaan baru berdasarkan buku ini.</a> <span class="badge bg-secondary">8 balasan</span></li>
+                        </ul>
+                        <a href="buat_topik.html" class="btn btn-outline-primary mt-2"><i class="bi bi-plus-circle-fill me-2"></i> Mulai Diskusi Baru tentang Buku Ini</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="py-5 mt-5 bg-light rounded">
+            <div class="container px-4">
+                <h3 class="mb-4 text-center">Buku Lain yang Mungkin Anda Suka</h3>
+                <div class="row">
+                    <div class="col-md-4 col-lg-3 mb-4">
+                        <div class="card h-100">
+                            <img src="https://via.placeholder.com/300x450?text=Buku+Terkait+1" class="card-img-top" alt="Buku Terkait 1">
+                            <div class="card-body">
+                                <h6 class="card-title"><a href="#" class="text-decoration-none">Deep Work</a></h6>
+                                <p class="card-text small text-muted">Cal Newport</p>
+                            </div>
+                             <div class="card-footer"><a href="#" class="btn btn-sm btn-outline-primary w-100">Lihat</a></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-3 mb-4">
+                        <div class="card h-100">
+                            <img src="https://via.placeholder.com/300x450?text=Buku+Terkait+2" class="card-img-top" alt="Buku Terkait 2">
+                            <div class="card-body">
+                                <h6 class="card-title"><a href="#" class="text-decoration-none">The Power of Habit</a></h6>
+                                <p class="card-text small text-muted">Charles Duhigg</p>
+                            </div>
+                            <div class="card-footer"><a href="#" class="btn btn-sm btn-outline-primary w-100">Lihat</a></div>
+                        </div>
+                    </div>
+                    </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container text-center">
+             <p>&copy; 2025 Komunitas LiterasiKita. Dibuat dengan <i class="bi bi-heart-fill text-danger"></i> untuk mahasiswa Indonesia.</p>
+            <p><a href="#">Kebijakan Privasi</a> | <a href="#">Syarat & Ketentuan</a></p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function simpanKeRak(tipeRak, judulBuku) {
+            alert(`Buku "${judulBuku}"telah ditambahkan ke rak "${tipeRak}".`);
+        }
+
+        const inputRatingStars = document.querySelectorAll('#inputRating .bi-star');
+        const ratingValueInput = document.getElementById('ratingValue');
+
+        inputRatingStars.forEach(star => {
+            star.addEventListener('click', function() {
+                const value = this.dataset.value;
+                ratingValueInput.value = value;
+                inputRatingStars.forEach((s, index) => {
+                    if (index < value) {
+                        s.classList.remove('bi-star');
+                        s.classList.add('bi-star-fill');
+                    } else {
+                        s.classList.remove('bi-star-fill');
+                        s.classList.add('bi-star');
+                    }
+                });
+            });
+             star.addEventListener('mouseover', function() {
+                const value = this.dataset.value;
+                 inputRatingStars.forEach((s, index) => {
+                    if (index < value) {
+                        s.classList.remove('bi-star');
+                        s.classList.add('bi-star-fill');
+                    } else {
+                        s.classList.remove('bi-star-fill');
+                        s.classList.add('bi-star');
+                    }
+                });
+            });
+            star.addEventListener('mouseout', function() { // Kembalikan ke nilai yang sudah dipilih
+                const currentValue = ratingValueInput.value || 0;
+                 inputRatingStars.forEach((s, index) => {
+                    if (index < currentValue) {
+                        s.classList.remove('bi-star');
+                        s.classList.add('bi-star-fill');
+                    } else {
+                        s.classList.remove('bi-star-fill');
+                        s.classList.add('bi-star');
+                    }
+                });
+            });
+        });
+
+        document.getElementById('formReview').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const reviewText = document.getElementById('textReview').value;
+            const rating = ratingValueInput.value;
+            if (reviewText.trim() === '' || rating === '') {
+                alert('Harap isi rating dan teks review Anda.');
+                return;
+            }
+            alert(`Review Anda (Rating: ${rating}, Teks: "${reviewText.substring(0,30)}...") telah dikirim!`);
+            // Di sini Anda bisa menambahkan review ke #reviewList secara dinamis dengan JS untuk simulasi
+            document.getElementById('formReview').reset();
+            ratingValueInput.value = ''; // Reset hidden input
+            inputRatingStars.forEach(s => { // Reset tampilan bintang
+                s.classList.remove('bi-star-fill');
+                s.classList.add('bi-star');
+            });
+
+            // Tutup collapse form
+            const collapseElement = document.getElementById('formTulisReview');
+            const bsCollapse = bootstrap.Collapse.getInstance(collapseElement) || new bootstrap.Collapse(collapseElement, {toggle: false});
+            bsCollapse.hide();
+        });
+    </script>
+</body>
+</html>

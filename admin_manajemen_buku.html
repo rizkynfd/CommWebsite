@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Buku - Admin LiterasiKita</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .book-cover-table { max-width: 50px; height: auto; }
+        #tabelManajemenBuku th { cursor: pointer; }
+        #tabelManajemenBuku th.asc::after { content: ' ▲'; }
+        #tabelManajemenBuku th.desc::after { content: ' ▼'; }
+        .toast-container {
+            z-index: 1100; 
+        }
+    </style>
+</head>
+<body>
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        </div>
+
+    <div class="admin-sidebar">
+        <div class="admin-brand"><i class="bi bi-shield-lock-fill"></i> Admin Panel</div>
+        <nav class="nav flex-column">
+            <a class="nav-link" href="admin_dashboard.html"><i class="bi bi-house-door-fill"></i> Dashboard</a>
+            <a class="nav-link active" aria-current="page" href="admin_manajemen_buku.html"><i class="bi bi-book-fill"></i> Manajemen Buku</a>
+            <a class="nav-link" href="admin_moderasi_diskusi.html"><i class="bi bi-chat-left-text-fill"></i> Moderasi Diskusi</a>
+            <a class="nav-link" href="admin_laporan_aktivitas.html"><i class="bi bi-graph-up-arrow"></i> Laporan Aktivitas</a>
+            <a class="nav-link" href="admin_manajemen_tantangan.html"><i class="bi bi-trophy-fill"></i> Manajemen Tantangan</a>
+            <a class="nav-link mt-auto logout-link" href="#" onclick="event.preventDefault(); showLogoutToastAndRedirect();">
+                <i class="bi bi-box-arrow-right"></i> Logout
+            </a>
+        </nav>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light admin-navbar sticky-top shadow-sm">
+        <div class="container-fluid">
+             <button class="btn btn-light d-md-none me-2" id="sidebarToggleAdminBuku"><i class="bi bi-list"></i></button>
+            <span class="navbar-brand mb-0 h1">Manajemen Buku</span>
+        </div>
+    </nav>
+
+    <main class="admin-content">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Daftar Buku</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambahBukuModal">
+                        <i class="bi bi-plus-circle-fill me-2"></i> Tambah Buku Baru
+                    </button>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-8"> 
+                    <input type="text" class="form-control" id="searchInputBuku" placeholder="Cari buku (judul, penulis)..." onkeyup="filterTabelBuku()">
+                </div>
+                <div class="col-md-4"> 
+                    <select class="form-select" id="filterGenreBuku" onchange="filterTabelBuku()">
+                        <option value="">Semua Genre</option>
+                        <option value="Teknologi">Teknologi</option>
+                        <option value="Fiksi">Fiksi</option>
+                        <option value="Non-Fiksi">Non-Fiksi</option>
+                        <option value="Sains">Sains</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="card shadow">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle" id="tabelManajemenBuku">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Sampul</th>
+                                    <th scope="col" onclick="sortTable(2, 'tabelManajemenBuku')">Judul Buku <i class="bi bi-arrow-down-up"></i></th>
+                                    <th scope="col" onclick="sortTable(3, 'tabelManajemenBuku')">Penulis <i class="bi bi-arrow-down-up"></i></th>
+                                    <th scope="col">Genre</th>
+                                    <th scope="col">Tgl Ditambahkan</th>
+                                    <th scope="col" class="text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-id="1">
+                                    <th scope="row">1</th>
+                                    <td><img src="https://via.placeholder.com/50x75?text=Python" alt="cover" class="img-thumbnail book-cover-table"></td>
+                                    <td class="judul-buku">Belajar Pemrograman Python</td>
+                                    <td class="penulis-buku">John Doe</td>
+                                    <td class="genre-buku">Teknologi</td>
+                                    <td>2025-01-15</td>
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-info me-1" title="Lihat Detail" onclick="lihatDetailBuku(1)"><i class="bi bi-eye-fill"></i></button>
+                                        <button class="btn btn-sm btn-warning me-1" title="Edit" data-bs-toggle="modal" data-bs-target="#editBukuModal" onclick="isiFormEditBuku(1, 'Belajar Pemrograman Python', 'John Doe', 'Teknologi', 'https://via.placeholder.com/50x75?text=Python', 'Sinopsis buku Python...')"><i class="bi bi-pencil-square"></i></button>
+                                        <button class="btn btn-sm btn-danger" title="Hapus" onclick="konfirmasiHapusBuku(1, 'Belajar Pemrograman Python', this)"><i class="bi bi-trash-fill"></i></button>
+                                    </td>
+                                </tr>
+                                <tr data-id="2">
+                                    <th scope="row">2</th>
+                                    <td><img src="https://via.placeholder.com/50x75?text=Laskar" alt="cover" class="img-thumbnail book-cover-table"></td>
+                                    <td class="judul-buku">Laskar Pelangi</td>
+                                    <td class="penulis-buku">Andrea Hirata</td>
+                                    <td class="genre-buku">Fiksi</td>
+                                    <td>2024-11-20</td>
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-info me-1" title="Lihat Detail" onclick="lihatDetailBuku(2)"><i class="bi bi-eye-fill"></i></button>
+                                        <button class="btn btn-sm btn-warning me-1" title="Edit" data-bs-toggle="modal" data-bs-target="#editBukuModal" onclick="isiFormEditBuku(2, 'Laskar Pelangi', 'Andrea Hirata', 'Fiksi', 'https://via.placeholder.com/50x75?text=Laskar', 'Sinopsis buku Laskar Pelangi...')"><i class="bi bi-pencil-square"></i></button>
+                                        <button class="btn btn-sm btn-danger" title="Hapus" onclick="konfirmasiHapusBuku(2, 'Laskar Pelangi', this)"><i class="bi bi-trash-fill"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                     <p id="noResultsBuku" class="text-center text-muted mt-3" style="display: none;">Tidak ada buku yang cocok dengan filter Anda.</p>
+                </div>
+                 <div class="card-footer d-flex justify-content-end">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination mb-0">
+                            <li class="page-item disabled"><a class="page-link" href="#">Sebelumnya</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">Berikutnya</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal fade" id="tambahBukuModal" tabindex="-1" aria-labelledby="tambahBukuModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tambahBukuModalLabel">Form Tambah Buku Baru</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formTambahBuku">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label for="judulBuku" class="form-label">Judul Buku <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="judulBuku" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="penulisBuku" class="form-label">Penulis <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="penulisBuku" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="genreBuku" class="form-label">Genre <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="genreBuku">
+                                </div>
+                                 </div>
+                            <div class="col-md-4">
+                                 <div class="mb-3">
+                                    <label for="sampulBukuFile" class="form-label">Gambar Sampul</label>
+                                    <input type="file" class="form-control" id="sampulBukuFile" accept="image/*" onchange="previewSampul(event, 'previewTambahSampul')">
+                                    <img id="previewTambahSampul" src="https://via.placeholder.com/150x220?text=Preview" alt="Preview Sampul" class="img-thumbnail mt-2" style="max-width: 150px; max-height: 220px; object-fit: cover;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="sinopsisBuku" class="form-label">Sinopsis</label>
+                            <textarea class="form-control" id="sinopsisBuku" rows="4"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" onclick="simpanBuku('tambah')">Simpan Buku</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editBukuModal" tabindex="-1" aria-labelledby="editBukuModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editBukuModalLabel">Form Edit Buku</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                     <form id="formEditBuku">
+                        <input type="hidden" id="editBookId">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label for="editJudulBuku" class="form-label">Judul Buku <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="editJudulBuku" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editPenulisBuku" class="form-label">Penulis <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="editPenulisBuku" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editGenreBuku" class="form-label">Genre</label>
+                                    <input type="text" class="form-control" id="editGenreBuku">
+                                </div>
+                                 </div>
+                            <div class="col-md-4">
+                                 <div class="mb-3">
+                                    <label for="editSampulBukuFile" class="form-label">Gambar Sampul</label>
+                                    <input type="file" class="form-control" id="editSampulBukuFile" accept="image/*" onchange="previewSampul(event, 'previewEditSampul')">
+                                    <img id="previewEditSampul" src="https://via.placeholder.com/150x220?text=Preview" alt="Preview Sampul" class="img-thumbnail mt-2" style="max-width: 150px; max-height: 220px; object-fit: cover;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editSinopsisBuku" class="form-label">Sinopsis</label>
+                            <textarea class="form-control" id="editSinopsisBuku" rows="4"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" onclick="simpanBuku('edit')">Simpan Perubahan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="konfirmasiHapusBukuModal" tabindex="-1" aria-labelledby="konfirmasiHapusBukuModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="konfirmasiHapusBukuModalLabel">Konfirmasi Penghapusan</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="konfirmasiHapusBukuModalBody">
+            </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="button" class="btn btn-danger" id="tombolKonfirmasiHapusBuku">Ya, Hapus</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function showToast(message, type = 'success') {
+            const toastContainer = document.querySelector('.toast-container');
+            const toastId = 'toast-' + Math.random().toString(36).substr(2, 9);
+            let bgClass = 'bg-success';
+            if (type === 'error') bgClass = 'bg-danger';
+            if (type === 'warning') bgClass = 'bg-warning text-dark';
+            if (type === 'info') bgClass = 'bg-info text-dark';
+
+            const toastHTML = `
+                <div id="${toastId}" class="toast align-items-center text-white ${bgClass} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            ${message}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            `;
+            toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+            const toastElement = document.getElementById(toastId);
+            const toast = new bootstrap.Toast(toastElement, { delay: 3000 });
+            toast.show();
+            toastElement.addEventListener('hidden.bs.toast', () => {
+                toastElement.remove();
+            });
+        }
+        
+        function showLogoutToastAndRedirect() {
+            showToast('Anda telah logout. Mengarahkan kembali ke halaman login.', 'info');
+            setTimeout(() => {
+                window.location.href = 'login_utama.html';
+            }, 1500);
+        }
+
+        const sidebarToggleAdminBuku = document.getElementById('sidebarToggleAdminBuku');
+        if (sidebarToggleAdminBuku) {
+             sidebarToggleAdminBuku.addEventListener('click', function(event) {
+                event.preventDefault();
+                document.querySelector('.admin-sidebar').classList.toggle('collapsed');
+                document.querySelector('.admin-content').classList.toggle('expanded');
+                document.querySelector('.admin-navbar').classList.toggle('expanded');
+            });
+        }
+
+        let nextBookId = 3; 
+        const placeholderSampul = 'https://via.placeholder.com/50x75?text=New';
+        let bookToDeleteId = null;
+        let bookElementToDelete = null;
+
+
+        function previewSampul(event, previewElementId) {
+            const reader = new FileReader();
+            reader.onload = function(){
+                const output = document.getElementById(previewElementId);
+                output.src = reader.result;
+            };
+            if (event.target.files && event.target.files[0]) {
+                reader.readAsDataURL(event.target.files[0]);
+            } else {
+                 document.getElementById(previewElementId).src = 'https://via.placeholder.com/150x220?text=Preview';
+            }
+        }
+        
+        function simpanBuku(mode) {
+            const modalId = mode === 'tambah' ? 'tambahBukuModal' : 'editBukuModal';
+            const formId = mode === 'tambah' ? 'formTambahBuku' : 'formEditBuku';
+            const form = document.getElementById(formId);
+
+            const judul = form.querySelector(mode === 'tambah' ? '#judulBuku' : '#editJudulBuku').value.trim();
+            const penulis = form.querySelector(mode === 'tambah' ? '#penulisBuku' : '#editPenulisBuku').value.trim();
+            const genre = form.querySelector(mode === 'tambah' ? '#genreBuku' : '#editGenreBuku').value.trim();
+            const sinopsis = form.querySelector(mode === 'tambah' ? '#sinopsisBuku' : '#editSinopsisBuku').value.trim();
+            const sampulFile = form.querySelector(mode === 'tambah' ? '#sampulBukuFile' : '#editSampulBukuFile').files[0];
+            const sampulPreviewSrc = form.querySelector(mode === 'tambah' ? '#previewTambahSampul' : '#previewEditSampul').src;
+
+            if (!judul || !penulis) {
+                showToast('Judul dan Penulis buku wajib diisi!', 'error');
+                return;
+            }
+            
+            const tabelBody = document.getElementById('tabelManajemenBuku').getElementsByTagName('tbody')[0];
+
+            if (mode === 'tambah') {
+                const newRow = tabelBody.insertRow(0); 
+                newRow.setAttribute('data-id', nextBookId);
+                const escapedJudul = judul.replace(/'/g, "\\'");
+                const escapedPenulis = penulis.replace(/'/g, "\\'");
+                const escapedGenre = genre.replace(/'/g, "\\'");
+                const escapedSinopsis = sinopsis.replace(/'/g, "\\'");
+                const escapedSampulSrc = (sampulFile ? sampulPreviewSrc : placeholderSampul).replace(/'/g, "\\'");
+
+                newRow.innerHTML = `
+                    <th scope="row">${nextBookId}</th>
+                    <td><img src="${sampulFile ? sampulPreviewSrc : placeholderSampul}" alt="cover" class="img-thumbnail book-cover-table"></td>
+                    <td class="judul-buku">${judul}</td>
+                    <td class="penulis-buku">${penulis}</td>
+                    <td class="genre-buku">${genre || '-'}</td>
+                    <td>${new Date().toISOString().slice(0,10)}</td>
+                    <td class="text-center">
+                        <button class="btn btn-sm btn-info me-1" title="Lihat Detail" onclick="lihatDetailBuku(${nextBookId})"><i class="bi bi-eye-fill"></i></button>
+                        <button class="btn btn-sm btn-warning me-1" title="Edit" data-bs-toggle="modal" data-bs-target="#editBukuModal" onclick="isiFormEditBuku(${nextBookId}, '${escapedJudul}', '${escapedPenulis}', '${escapedGenre}', '${escapedSampulSrc}', '${escapedSinopsis}')"><i class="bi bi-pencil-square"></i></button>
+                        <button class="btn btn-sm btn-danger" title="Hapus" onclick="konfirmasiHapusBuku(${nextBookId}, '${escapedJudul}', this)"><i class="bi bi-trash-fill"></i></button>
+                    </td>
+                `;
+                nextBookId++;
+                showToast(`Buku "${judul}" berhasil disimpan.`, 'success');
+                form.reset();
+                document.getElementById('previewTambahSampul').src = 'https://via.placeholder.com/150x220?text=Preview';
+
+            } else { 
+                const bookId = document.getElementById('editBookId').value;
+                const rowToUpdate = tabelBody.querySelector(`tr[data-id="${bookId}"]`);
+                if (rowToUpdate) {
+                    const escapedJudul = judul.replace(/'/g, "\\'");
+                    const escapedPenulis = penulis.replace(/'/g, "\\'");
+                    const escapedGenre = genre.replace(/'/g, "\\'");
+                    const escapedSinopsis = sinopsis.replace(/'/g, "\\'");
+                    const currentSampulSrc = rowToUpdate.cells[1].getElementsByTagName('img')[0].src;
+                    const newSampulSrc = sampulFile ? sampulPreviewSrc : currentSampulSrc;
+                    const escapedNewSampulSrc = newSampulSrc.replace(/'/g, "\\'");
+
+                    rowToUpdate.cells[1].innerHTML = `<img src="${newSampulSrc}" alt="cover" class="img-thumbnail book-cover-table">`;
+                    rowToUpdate.cells[2].textContent = judul;
+                    rowToUpdate.cells[3].textContent = penulis;
+                    rowToUpdate.cells[4].textContent = genre || '-';
+                    rowToUpdate.cells[6].querySelector('.btn-warning').setAttribute('onclick', `isiFormEditBuku(${bookId}, '${escapedJudul}', '${escapedPenulis}', '${escapedGenre}', '${escapedNewSampulSrc}', '${escapedSinopsis}')`);
+                }
+                showToast(`Buku "${judul}" berhasil diperbarui.`, 'success');
+            }
+
+            const modalElement = document.getElementById(modalId);
+            const modalInstance = bootstrap.Modal.getInstance(modalElement);
+            if(modalInstance) modalInstance.hide();
+            filterTabelBuku();
+        }
+
+        function isiFormEditBuku(id, judul, penulis, genre, sampulSrc, sinopsis) {
+            document.getElementById('editBookId').value = id;
+            document.getElementById('editJudulBuku').value = judul;
+            document.getElementById('editPenulisBuku').value = penulis;
+            document.getElementById('editGenreBuku').value = genre === '-' ? '' : genre;
+            document.getElementById('editSinopsisBuku').value = sinopsis;
+            document.getElementById('previewEditSampul').src = sampulSrc;
+            document.getElementById('editSampulBukuFile').value = ''; 
+        }
+        
+        function konfirmasiHapusBuku(id, judul, el) {
+            bookToDeleteId = id;
+            bookElementToDelete = el;
+            document.getElementById('konfirmasiHapusBukuModalBody').innerText = `Apakah Anda yakin ingin menghapus buku "${judul}"? Tindakan ini tidak dapat dibatalkan.`;
+            const konfirmasiModal = new bootstrap.Modal(document.getElementById('konfirmasiHapusBukuModal'));
+            konfirmasiModal.show();
+        }
+
+        document.getElementById('tombolKonfirmasiHapusBuku').addEventListener('click', function() {
+            if (bookToDeleteId && bookElementToDelete) {
+                bookElementToDelete.closest('tr').remove();
+                showToast(`Buku (ID: ${bookToDeleteId}) telah dihapus.`, 'info');
+                const konfirmasiModalEl = document.getElementById('konfirmasiHapusBukuModal');
+                const modalInstance = bootstrap.Modal.getInstance(konfirmasiModalEl);
+                if(modalInstance) modalInstance.hide();
+                bookToDeleteId = null;
+                bookElementToDelete = null;
+                filterTabelBuku();
+            }
+        });
+        
+        function lihatDetailBuku(bookId){
+            showToast(`Melihat detail buku ID: ${bookId}.`, 'info');
+        }
+
+        function filterTabelBuku() {
+            const searchTerm = document.getElementById('searchInputBuku').value.toLowerCase();
+            const filterGenre = document.getElementById('filterGenreBuku').value.toLowerCase();
+            const tabelBody = document.getElementById('tabelManajemenBuku').getElementsByTagName('tbody')[0];
+            const rows = tabelBody.getElementsByTagName('tr');
+            let found = false;
+
+            for (let i = 0; i < rows.length; i++) {
+                const judul = rows[i].getElementsByClassName('judul-buku')[0].textContent.toLowerCase();
+                const penulis = rows[i].getElementsByClassName('penulis-buku')[0].textContent.toLowerCase();
+                const genre = rows[i].getElementsByClassName('genre-buku')[0].textContent.toLowerCase();
+                
+                const matchSearch = judul.includes(searchTerm) || penulis.includes(searchTerm);
+                const matchGenre = filterGenre === '' || genre.includes(filterGenre);
+
+                if (matchSearch && matchGenre) {
+                    rows[i].style.display = "";
+                    found = true;
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+            document.getElementById('noResultsBuku').style.display = found ? "none" : "";
+        }
+
+        function resetFilterBuku() {
+            document.getElementById('searchInputBuku').value = '';
+            document.getElementById('filterGenreBuku').value = '';
+            filterTabelBuku();
+        }
+        
+        function sortTable(columnIndex, tableId) {
+            const table = document.getElementById(tableId);
+            const tbody = table.tBodies[0];
+            const rows = Array.from(tbody.querySelectorAll("tr"));
+            const th = table.querySelectorAll("th")[columnIndex];
+            const isAscending = !th.classList.contains("asc"); 
+
+            table.querySelectorAll("th").forEach(h => h.classList.remove("asc", "desc"));
+            th.classList.toggle(isAscending ? "asc" : "desc");
+
+            rows.sort((a, b) => {
+                let valA = a.querySelectorAll("td, th")[columnIndex].innerText.toLowerCase();
+                let valB = b.querySelectorAll("td, th")[columnIndex].innerText.toLowerCase();
+                if (!isNaN(parseFloat(valA)) && !isNaN(parseFloat(valB))) { 
+                    valA = parseFloat(valA);
+                    valB = parseFloat(valB);
+                }
+                if (valA < valB) return isAscending ? -1 : 1;
+                if (valA > valB) return isAscending ? 1 : -1;
+                return 0;
+            });
+
+            rows.forEach(row => tbody.appendChild(row));
+        }
+    </script>
+</body>
+</html>
