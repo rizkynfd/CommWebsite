@@ -144,8 +144,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // --- Fungsi Toast dan Logout ---
-        function showToast(message, type = 'success') { /* ... (sama seperti sebelumnya) ... */ 
+       
+        function showToast(message, type = 'success') { 
             const toastContainer = document.querySelector('.toast-container');
             if (!toastContainer) { 
                 console.warn('Toast container not found. Displaying alert instead.');
@@ -177,14 +177,14 @@
                 toastElement.remove();
             });
         }
-        function showLogoutToastAndRedirect() { /* ... (sama seperti sebelumnya) ... */
+        function showLogoutToastAndRedirect() { 
             showToast('Anda telah logout. Mengarahkan kembali ke halaman login.', 'info');
             setTimeout(() => {
                 window.location.href = 'index.html';
             }, 1500);
         }
         const sidebarToggleLaporan = document.getElementById('sidebarToggleLaporan');
-        if (sidebarToggleLaporan) { /* ... (sama seperti sebelumnya) ... */
+        if (sidebarToggleLaporan) { 
             sidebarToggleLaporan.addEventListener('click', function(event) {
                 event.preventDefault();
                 document.querySelector('.admin-sidebar').classList.toggle('collapsed');
@@ -196,14 +196,12 @@
             showToast('Fitur ekspor laporan belum diimplementasikan.', 'info');
         }
 
-        // --- Chart.js dan Filter Periode ---
-        let userGrowthChart; // Variabel untuk menyimpan instance chart
+        let userGrowthChart; 
 
-        // Data contoh untuk berbagai periode
         const chartDataStore = {
             harian: {
                 labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
-                data: [10, 12, 9, 15, 13, 18, 20], // Pengguna baru per hari
+                data: [10, 12, 9, 15, 13, 18, 20], 
                 title: 'Pertumbuhan Pengguna (Minggu Ini)',
                 statTitle: 'Pengguna Aktif Hari Ini',
                 statValue: '150',
@@ -211,7 +209,7 @@
             },
             mingguan: {
                 labels: ['Minggu 1', 'Minggu 2', 'Minggu 3', 'Minggu 4'],
-                data: [50, 60, 55, 70], // Pengguna baru per minggu
+                data: [50, 60, 55, 70], 
                 title: 'Pertumbuhan Pengguna (Bulan Ini - Mingguan)',
                 statTitle: 'Pengguna Aktif Minggu Ini',
                 statValue: '850',
@@ -219,7 +217,7 @@
             },
             bulanan: {
                 labels: ['Des 24', 'Jan 25', 'Feb 25', 'Mar 25', 'Apr 25', 'Mei 25'],
-                data: [500, 650, 800, 950, 1100, 1258], // Total pengguna per bulan
+                data: [500, 650, 800, 950, 1100, 1258], 
                 title: 'Pertumbuhan Pengguna (6 Bulan Terakhir)',
                 statTitle: 'Pengguna Aktif Bulan Ini',
                 statValue: '1,258',
@@ -227,7 +225,7 @@
             },
             tahunan: {
                 labels: ['2022', '2023', '2024', '2025'],
-                data: [2000, 5000, 9000, 12000], // Total pengguna per tahun
+                data: [2000, 5000, 9000, 12000],
                 title: 'Pertumbuhan Pengguna (Tahunan)',
                 statTitle: 'Pengguna Aktif Tahun Ini',
                 statValue: '12,345',
@@ -239,26 +237,19 @@
             const selectedData = chartDataStore[periode];
             if (!selectedData || !userGrowthChart) return;
 
-            // Update Chart
+            
             userGrowthChart.data.labels = selectedData.labels;
             userGrowthChart.data.datasets[0].data = selectedData.data;
             userGrowthChart.data.datasets[0].label = `Jumlah Pengguna (${periode.charAt(0).toUpperCase() + periode.slice(1)})`;
-            userGrowthChart.options.plugins.title.text = selectedData.title; // Update judul chart jika perlu
+            userGrowthChart.options.plugins.title.text = selectedData.title; 
             userGrowthChart.update();
             document.getElementById('chartTitle').innerText = selectedData.title;
 
-
-            // Update Statistik Cards (contoh untuk Pengguna Aktif)
             document.getElementById('titlePenggunaAktif').innerText = selectedData.statTitle;
             document.getElementById('valuePenggunaAktif').innerText = selectedData.statValue;
             document.getElementById('trendPenggunaAktif').innerHTML = selectedData.statTrend;
             
-            // Anda bisa menambahkan update untuk kartu statistik lainnya dengan cara serupa
-            // Misalnya, jika Anda punya data berbeda untuk "Diskusi Baru" per periode
             document.getElementById('titleDiskusiBaru').innerText = `Diskusi Baru (${periode.charAt(0).toUpperCase() + periode.slice(1)})`;
-            // Ganti value dan trend diskusi sesuai data periode yang dipilih
-            // document.getElementById('valueDiskusiBaru').innerText = ...; 
-            // document.getElementById('trendDiskusiBaru').innerHTML = ...;
 
             document.getElementById('titleBukuDitambahkan').innerText = `Buku Ditambahkan (${periode.charAt(0).toUpperCase() + periode.slice(1)})`;
         }
@@ -277,10 +268,10 @@
                 userGrowthChart = new Chart(ctx, {
                     type: 'line',
                     data: {
-                        labels: [], // Akan diisi oleh updateChartAndStats
+                        labels: [], 
                         datasets: [{
-                            label: '', // Akan diisi oleh updateChartAndStats
-                            data: [],  // Akan diisi oleh updateChartAndStats
+                            label: '', 
+                            data: [],  
                             borderColor: 'rgb(0, 123, 255)',
                             backgroundColor: 'rgba(0, 123, 255, 0.1)',
                             tension: 0.1,
@@ -297,17 +288,15 @@
                         plugins: { 
                             legend: { display: true, position: 'top' },
                             tooltip: { mode: 'index', intersect: false },
-                            title: { display: true, text: '' } // Judul Chart akan diupdate dinamis
+                            title: { display: true, text: '' } 
                         }
                     }
                 });
                 
-                // Set default view ke Bulanan
                 updateChartAndStats('bulanan'); 
                 setActiveFilterButton('btnBulanan');
             }
 
-            // Event listeners untuk tombol filter periode
             document.getElementById('btnHarian').addEventListener('click', function() {
                 setActiveFilterButton('btnHarian');
                 updateChartAndStats('harian');
@@ -325,12 +314,6 @@
                 updateChartAndStats('tahunan');
             });
 
-            // Anda juga bisa membuat input tanggal mempengaruhi chart,
-            // tapi itu memerlukan logika yang lebih kompleks untuk data statis ini.
-            // document.getElementById('tanggalLaporan').addEventListener('change', function() {
-            //     showToast('Tanggal laporan diubah ke: ' + this.value, 'info');
-            //     // Logika untuk memfilter data berdasarkan tanggal (jika ada data yang sesuai)
-            // });
         });
     </script>
 </body>

@@ -18,7 +18,7 @@
         .footer {
             background-color: #f8f9fa;
             padding: 1rem 0;
-            margin-top: auto; /* Mendorong footer ke bawah */
+            margin-top: auto; 
         }
         .card-title a {
             text-decoration: none;
@@ -27,15 +27,14 @@
         .card-title a:hover {
             text-decoration: underline;
         }
-         /* Variabel warna dasar (contoh, sesuaikan dengan style.css Anda) */
         :root {
-            --primary-color: #007bff; /* Biru utama */
-            --secondary-color: #6c757d; /* Abu-abu sekunder */
-            --text-color: #212529; /* Warna teks utama */
-            --text-light: #ffffff; /* Warna teks terang */
-            --accent-color: #ffc107; /* Kuning aksen (untuk rating bintang) */
-            --border-radius: 0.375rem; /* Radius border default Bootstrap */
-            --card-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15); /* Bayangan untuk card */
+            --primary-color: #007bff;
+            --secondary-color: #6c757d; 
+            --text-color: #212529; 
+            --text-light: #ffffff; 
+            --accent-color: #ffc107; 
+            --border-radius: 0.375rem; 
+            --card-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15); 
         }
         .nav-tabs .nav-link.active {
             background-color: var(--primary-color);
@@ -175,7 +174,6 @@
                 return;
             }
             
-            // Simulasi penambahan balasan ke UI
             const repliesSection = document.getElementById('repliesSection');
             const newReplyCard = document.createElement('div');
             newReplyCard.classList.add('card', 'mb-3');
@@ -199,14 +197,12 @@
                 </div>
             `;
             
-            // Sisipkan sebelum form tambah balasan, atau lebih baik sebelum elemen lain jika ada
             const formElement = document.getElementById('formTambahBalasan');
-            repliesSection.insertBefore(newReplyCard, formElement.previousElementSibling.nextElementSibling); // Menambah balasan baru di atas form
+            repliesSection.insertBefore(newReplyCard, formElement.previousElementSibling.nextElementSibling); 
 
             alert(`Balasan Anda telah (pura-pura) dikirim dan ditampilkan!`);
             document.getElementById('formBalasan').reset();
 
-            // Update jumlah balasan
             const replyCountElement = document.getElementById('replyCount');
             let currentCount = parseInt(replyCountElement.innerText);
             replyCountElement.innerText = currentCount + 1;

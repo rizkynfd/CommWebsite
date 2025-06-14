@@ -31,10 +31,10 @@
             border-color: var(--primary-color);
         }
         .rating i {
-            color: var(--accent-color); /* Warna bintang rating */
+            color: var(--accent-color); 
             cursor: pointer;
         }
-        .rating .bi-star { color: #e9ecef; } /* Warna bintang kosong */
+        .rating .bi-star { color: #e9ecef; } 
     </style>
 </head>
 <body>
@@ -254,7 +254,7 @@
                     }
                 });
             });
-            star.addEventListener('mouseout', function() { // Kembalikan ke nilai yang sudah dipilih
+            star.addEventListener('mouseout', function() { 
                 const currentValue = ratingValueInput.value || 0;
                  inputRatingStars.forEach((s, index) => {
                     if (index < currentValue) {
@@ -277,15 +277,13 @@
                 return;
             }
             alert(`Review Anda (Rating: ${rating}, Teks: "${reviewText.substring(0,30)}...") telah dikirim!`);
-            // Di sini Anda bisa menambahkan review ke #reviewList secara dinamis dengan JS untuk simulasi
             document.getElementById('formReview').reset();
-            ratingValueInput.value = ''; // Reset hidden input
-            inputRatingStars.forEach(s => { // Reset tampilan bintang
+            ratingValueInput.value = ''; 
+            inputRatingStars.forEach(s => { 
                 s.classList.remove('bi-star-fill');
                 s.classList.add('bi-star');
             });
 
-            // Tutup collapse form
             const collapseElement = document.getElementById('formTulisReview');
             const bsCollapse = bootstrap.Collapse.getInstance(collapseElement) || new bootstrap.Collapse(collapseElement, {toggle: false});
             bsCollapse.hide();

@@ -233,10 +233,9 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Fungsi untuk menampilkan toast
         function showToast(message, type = 'success') {
             const toastContainer = document.querySelector('.toast-container');
-            if (!toastContainer) { return; } // Pastikan container ada
+            if (!toastContainer) { return; } 
             const toastId = 'toast-' + Math.random().toString(36).substr(2, 9);
             let bgClass = 'bg-success'; 
             if (type === 'error') bgClass = 'bg-danger';
@@ -279,9 +278,9 @@
             });
         }
 
-        let nextChallengeId = 4; // Untuk ID tantangan baru
-        let challengeToDelete = null; // Menyimpan info tantangan yang akan dihapus
-        let elementToDelete = null; // Menyimpan elemen baris tabel yang akan dihapus
+        let nextChallengeId = 4; 
+        let challengeToDelete = null; 
+        let elementToDelete = null; 
 
         function simpanTantangan(mode) {
             const modalId = mode === 'tambah' ? 'tambahTantanganModal' : 'editTantanganModal';
@@ -305,7 +304,6 @@
             if (mode === 'tambah') {
                 const newRow = tabelBody.insertRow(0);
                 newRow.setAttribute('data-id', nextChallengeId);
-                // Escape quotes untuk parameter onclick
                 const escapedNama = nama.replace(/'/g, "\\'");
                 const escapedDeskripsi = deskripsi.replace(/'/g, "\\'");
                 const escapedTarget = target.replace(/'/g, "\\'");
@@ -327,7 +325,7 @@
                 nextChallengeId++;
                 showToast(`Tantangan "${nama}" berhasil disimpan.`, 'success');
                 form.reset();
-            } else { // Mode Edit
+            } else { 
                 const challengeId = document.getElementById('editChallengeId').value;
                 const rowToUpdate = tabelBody.querySelector(`tr[data-id="${challengeId}"]`);
                 if (rowToUpdate) {
@@ -339,7 +337,6 @@
                     rowToUpdate.querySelector('.nama-tantangan').textContent = nama;
                     rowToUpdate.querySelector('.periode-tantangan').textContent = `${tglMulai} - ${tglSelesai}`;
                     rowToUpdate.querySelector('.target-tantangan').textContent = target;
-                    // Status dan peserta tidak diubah di form edit ini untuk simplisitas
                     rowToUpdate.querySelector('.btn-warning').setAttribute('onclick', `isiFormEditTantangan(${challengeId}, '${escapedNama}', '${escapedDeskripsi}', '${tglMulai}', '${tglSelesai}', '${escapedTarget}', '${escapedKriteria}')`);
                 }
                 showToast(`Tantangan "${nama}" berhasil diperbarui.`, 'success');
@@ -382,7 +379,6 @@
         
         function lihatPeserta(challengeId, isArsip = false){
             showToast(`Melihat ${isArsip ? 'arsip' : 'peserta'} untuk tantangan ID: ${challengeId}.`, 'info');
-            // Di sini bisa navigasi ke halaman lain atau tampilkan modal dengan daftar peserta
         }
     </script>
 </body>

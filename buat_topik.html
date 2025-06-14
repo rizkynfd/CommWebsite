@@ -7,8 +7,16 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/style.css">
+    <style>
+
+        .toast-container {
+            z-index: 1100; 
+        }
+    </style>
 </head>
 <body>
+    <div class="toast-container position-fixed top-0 end-0 p-3"></div>
+
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm sticky-top">
         <div class="container">
             <a class="navbar-brand" href="dashboard_user.html"><i class="bi bi-book-half"></i> LiterasiKita</a>
@@ -50,8 +58,9 @@
             <div class="card-header bg-primary text-white">
                 <h1 class="h3 mb-0"><i class="bi bi-pencil-square me-2"></i>Buat Topik Diskusi Baru</h1>
             </div>
-            <div class="card-body">
-                <form id="formBuatTopik" action="diskusi_user.html"> <div class="mb-3">
+            <div class="card-body p-4">
+                <form id="formBuatTopik" action="diskusi_user.html">
+                    <div class="mb-3">
                         <label for="judulTopik" class="form-label fw-bold">Judul Topik</label>
                         <input type="text" class="form-control form-control-lg" id="judulTopik" name="judulTopik" placeholder="Ketik judul yang jelas dan menarik" required>
                         <div class="form-text">Contoh: Review Buku "Laskar Pelangi", Rekomendasi Novel Fantasi Terbaik, dll.</div>
@@ -72,19 +81,19 @@
                     <div class="mb-3">
                         <label for="bukuTerkait" class="form-label fw-bold">Tautkan ke Buku (Opsional)</label>
                         <input type="text" class="form-control" id="bukuTerkait" name="bukuTerkait" placeholder="Cari judul buku jika topik spesifik tentang buku tertentu...">
-                        </div>
+                    </div>
 
                     <div class="mb-3">
                         <label for="isiTopik" class="form-label fw-bold">Isi Topik / Pertanyaan Awal</label>
                         <textarea class="form-control" id="isiTopik" name="isiTopik" rows="8" placeholder="Jelaskan lebih detail apa yang ingin Anda diskusikan atau tanyakan..." required></textarea>
-                        </div>
+                    </div>
 
                     <div class="mb-3 form-check">
                         <input type="checkbox" class="form-check-input" id="notifikasiEmail" name="notifikasiEmail" checked>
                         <label class="form-check-label" for="notifikasiEmail">Beri tahu saya via email jika ada balasan baru</label>
                     </div>
 
-                    <div class="d-flex justify-content-end">
+                    <div class="d-flex justify-content-end mt-4">
                         <a href="diskusi_user.html" class="btn btn-outline-secondary me-2">Batal</a>
                         <button type="submit" class="btn btn-success btn-lg"><i class="bi bi-send-fill me-2"></i> Publikasikan Topik</button>
                     </div>
@@ -101,11 +110,53 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        function showToast(message, type = 'success') {
+            const toastContainer = document.querySelector('.toast-container');
+            if (!toastContainer) { 
+                alert(message); 
+                return;
+            }
+            const toastId = 'toast-' + Math.random().toString(36).substr(2, 9);
+            let bgClass = 'bg-success'; 
+            if (type === 'error') bgClass = 'bg-danger';
+            if (type === 'warning') bgClass = 'bg-warning text-dark';
+            if (type === 'info') bgClass = 'bg-info text-dark';
+
+            const toastHTML = `
+                <div id="${toastId}" class="toast align-items-center text-white ${bgClass} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            ${message}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            `;
+            toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+            
+            const toastElement = document.getElementById(toastId);
+            const toast = new bootstrap.Toast(toastElement, { delay: 3000 });
+            toast.show();
+            toastElement.addEventListener('hidden.bs.toast', () => { 
+                toastElement.remove();
+            });
+        }
+
         document.getElementById('formBuatTopik').addEventListener('submit', function(event) {
-            // event.preventDefault(); // Hapus ini jika ingin navigasi ke action form
-            alert('Topik berhasil dipublikasikan! Anda akan diarahkan kembali ke halaman diskusi.');
-            // Dalam aplikasi nyata, data akan dikirim ke backend.
-            // Untuk simulasi, kita biarkan form submit ke action="diskusi_user.html"
+            event.preventDefault(); 
+
+            const judul = document.getElementById('judulTopik').value.trim();
+            const isi = document.getElementById('isiTopik').value.trim();
+            if (judul === '' || isi === '') {
+                showToast('Judul dan Isi Topik tidak boleh kosong!', 'warning');
+                return;
+            }
+
+            showToast('Topik berhasil dipublikasikan!', 'success');
+            
+            setTimeout(() => {
+                window.location.href = this.action; 
+            }, 1500); 
         });
     </script>
 </body>

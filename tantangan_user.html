@@ -28,7 +28,7 @@
             border-color: var(--primary-color);
         }
         .toast-container {
-            z-index: 1090; /* Pastikan toast tampil di atas elemen lain */
+            z-index: 1090; 
         }
     </style>
 </head>
@@ -177,17 +177,16 @@
             }
         });
 
-        // Fungsi untuk menampilkan toast (disesuaikan dari admin_manajemen_tantangan.html)
         function showToast(message, type = 'success') {
             const toastContainer = document.querySelector('.toast-container');
             if (!toastContainer) {
-                alert(message); // Fallback jika container tidak ditemukan
+                alert(message); 
                 return; 
             }
             const toastId = 'toast-' + Math.random().toString(36).substr(2, 9);
             
-            let toastClasses = 'text-white bg-success'; // Default untuk success
-            let iconHtml = '<i class="bi bi-check-circle-fill me-2"></i>'; // Default icon untuk success
+            let toastClasses = 'text-white bg-success'; 
+            let iconHtml = '<i class="bi bi-check-circle-fill me-2"></i>'; 
 
             if (type === 'error') {
                 toastClasses = 'text-white bg-danger';
@@ -223,22 +222,18 @@
         }
 
         function ikutiTantangan(buttonElement, challengeTitle, challengePeriod, challengeDetailUrl, progressGoalText) {
-            // 1. Tampilkan notifikasi menggunakan showToast
             showToast(`Anda sekarang mengikuti tantangan: "${challengeTitle}"!`, 'success');
 
-            // 2. Ubah tombol di tab "Tantangan Tersedia"
             buttonElement.textContent = 'Sudah Diikuti';
             buttonElement.classList.remove('btn-success');
             buttonElement.classList.add('btn-secondary');
             buttonElement.disabled = true;
 
-            // 3. Sembunyikan placeholder di tab "Tantangan Saya Ikuti"
             const placeholderDiikuti = document.getElementById('placeholderDiikuti');
             if (placeholderDiikuti) {
                 placeholderDiikuti.style.display = 'none';
             }
 
-            // 4. Buat kartu baru untuk tab "Tantangan Saya Ikuti"
             const diikutiRow = document.getElementById('diikutiRow');
             const newChallengeCard = document.createElement('div');
             newChallengeCard.classList.add('col-md-6', 'col-lg-4', 'mb-4');
@@ -262,7 +257,6 @@
                 </div>
             `;
 
-            // 5. Tambahkan kartu baru ke tab "Tantangan Saya Ikuti"
             diikutiRow.insertBefore(newChallengeCard, diikutiRow.firstChild);
         }
     </script>

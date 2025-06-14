@@ -9,10 +9,20 @@
     <link rel="stylesheet" href="css/style.css">
     <style>
         .progress-text { font-size: 0.9rem; }
-        .book-list-challenge img { max-width: 60px; margin-right: 10px; }
+        .book-list-challenge img { 
+            max-width: 60px;
+            height: 90px;
+            object-fit: cover;
+            margin-right: 15px; 
+        }
+        .toast-container {
+            z-index: 1100; 
+        }
     </style>
 </head>
 <body>
+    <div class="toast-container position-fixed top-0 end-0 p-3"></div>
+
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm sticky-top">
         <div class="container">
             <a class="navbar-brand" href="dashboard_user.html"><i class="bi bi-book-half"></i> LiterasiKita</a>
@@ -150,7 +160,7 @@
                     </div>
                 <div class="mb-3">
                     <label for="tanggalSelesai" class="form-label">Tanggal Selesai Baca</label>
-                    <input type="date" class="form-control" id="tanggalSelesai" valueAsDate="new Date()">
+                    <input type="date" class="form-control" id="tanggalSelesai" value="">
                 </div>
                 <div class="mb-3">
                     <label for="reviewSingkat" class="form-label">Review Singkat (Opsional)</label>
@@ -174,18 +184,51 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        function simpanProgres() {
-            // Simulasi simpan progres
-            const buku = document.getElementById('bukuSelesai').value || "Buku Baru";
-            const tanggal = document.getElementById('tanggalSelesai').value;
-            alert(`Progres untuk buku "${buku}" (selesai ${tanggal}) telah disimpan!`);
+        function showToast(message, type = 'success') {
+            const toastContainer = document.querySelector('.toast-container');
+            if (!toastContainer) { 
+                alert(message); 
+            }
+            const toastId = 'toast-' + Math.random().toString(36).substr(2, 9);
+            let bgClass = 'bg-success'; 
+            if (type === 'error') bgClass = 'bg-danger';
+            if (type === 'warning') bgClass = 'bg-warning text-dark';
+            if (type === 'info') bgClass = 'bg-info text-dark';
 
-            // Logika untuk update UI (contoh sederhana, perlu lebih canggih)
+            const toastHTML = `
+                <div id="${toastId}" class="toast align-items-center text-white ${bgClass} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            ${message}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            `;
+            toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+            
+            const toastElement = document.getElementById(toastId);
+            const toast = new bootstrap.Toast(toastElement, { delay: 3000 });
+            toast.show();
+            toastElement.addEventListener('hidden.bs.toast', () => { 
+                toastElement.remove();
+            });
+        }
+
+        function simpanProgres() {
+            const buku = document.getElementById('bukuSelesai').value.trim();
+            if (!buku) {
+                showToast('Silakan masukkan judul buku yang telah selesai dibaca.', 'warning');
+                return;
+            }
+
+            showToast(`Progres untuk buku "${buku}" berhasil disimpan!`, 'success');
+
             let count = parseInt(document.getElementById('bukuSelesaiCount').innerText);
             count++;
             document.getElementById('bukuSelesaiCount').innerText = count;
             let newProgress = (count / 5) * 100;
-            newProgress = Math.min(newProgress, 100); // Batasi maksimal 100%
+            newProgress = Math.min(newProgress, 100); 
             const progressBar = document.getElementById('progressBarChallenge');
             progressBar.style.width = newProgress + '%';
             progressBar.innerText = newProgress.toFixed(0) + '%';
@@ -197,7 +240,6 @@
                 document.getElementById('statusTantangan').classList.add('text-success');
                 document.getElementById('btnGabungKeluar').classList.add('disabled');
                 document.getElementById('btnGabungKeluar').innerText = "Tantangan Selesai";
-
             }
 
             const modalElement = document.getElementById('updateProgresModal');
@@ -206,6 +248,8 @@
                  modalInstance.hide();
             }
         }
+
+        document.getElementById('tanggalSelesai').valueAsDate = new Date();
     </script>
 </body>
 </html>

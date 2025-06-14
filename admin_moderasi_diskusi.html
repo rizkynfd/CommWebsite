@@ -245,12 +245,11 @@
         let moderationElement = null;
         let isMassAction = false;
         let selectedItemsForMassAction = [];
-        let editPostinganModalInstance = null; // Variabel untuk instance modal edit
+        let editPostinganModalInstance = null; 
 
         document.addEventListener('DOMContentLoaded', function() {
             updateStatusCounts();
             filterDiskusi();
-            // Inisialisasi instance modal edit
             const editModalElement = document.getElementById('editPostinganModal');
             if (editModalElement) {
                 editPostinganModalInstance = new bootstrap.Modal(editModalElement);
@@ -261,7 +260,7 @@
             isMassAction = false;
             moderationAction = aksi;
             moderationItemId = postId;
-            moderationElement = buttonElement; // Menyimpan elemen tombol untuk mencari baris
+            moderationElement = buttonElement; 
             document.getElementById('konfirmasiModerasiModalBody').innerText = `Apakah Anda yakin ingin ${aksi} ${itemDeskripsi} (ID: ${postId})?`;
             let btnClass = 'danger';
             if (aksi === 'setujui') btnClass = 'success';
@@ -305,7 +304,6 @@
                 selectedItemsForMassAction.forEach(cb => {
                     const row = cb.closest('tr');
                     const postId = row.dataset.id;
-                    // Untuk aksi massal, kita hanya perlu memproses, tidak perlu mencari elemen tombol individual
                     prosesAksiModerasi(moderationAction, postId, row.querySelector('.status-diskusi'), row, true);
                     cb.checked = false;
                 });
@@ -319,17 +317,17 @@
 
             if(modalInstance) modalInstance.hide();
             updateStatusCounts();
-            filterDiskusi(); // Terapkan filter ulang untuk memperbarui tampilan
+            filterDiskusi(); 
             moderationAction = null;
             moderationItemId = null;
-            moderationElement = null; // Reset elemen
+            moderationElement = null; 
             isMassAction = false;
             selectedItemsForMassAction = [];
         });
 
         function prosesAksiModerasi(aksi, postId, statusCell, row, silent = false) {
             let pesanAksi = '';
-            if (!row) { // Jika baris tidak ditemukan (misal, sudah dihapus)
+            if (!row) { 
                 if (!silent) showToast(`Postingan ID: ${postId} tidak ditemukan atau sudah diproses.`, 'warning');
                 return;
             }
@@ -346,16 +344,16 @@
                 case 'tolak':
                 case 'hapus':
                     pesanAksi = (aksi === 'tolak') ? 'ditolak dan dihapus' : 'dihapus';
-                    row.remove(); // Hapus baris dari tabel
+                    row.remove(); 
                     break;
-                // Kasus 'edit' akan ditangani oleh openEditModal dan simpanEditPostingan
+
                 case 'pending':
                     pesanAksi = 'dijadikan pending';
                      if(statusCell) {
                         statusCell.innerHTML = '<span class="badge bg-warning text-dark">Pending</span>';
                         row.dataset.status = 'pending';
                         row.classList.remove('table-danger');
-                        row.classList.add('table-warning'); // Tambahkan class warning jika relevan
+                        row.classList.add('table-warning'); 
                     }
                     break;
                 default: pesanAksi = 'diproses';
@@ -366,7 +364,7 @@
         }
 
         function openEditModal(postId, buttonElement) {
-            moderationItemId = postId; // Simpan ID untuk digunakan saat menyimpan
+            moderationItemId = postId; 
             const row = buttonElement.closest('tr');
             if (!row) {
                 showToast('Tidak dapat menemukan data postingan.', 'error');
@@ -395,8 +393,6 @@
                 showToast('Isi konten tidak boleh kosong.', 'error');
                 return;
             }
-
-            // Cari baris di tabel berdasarkan postId
             const rowToUpdate = document.querySelector(`#tabelModerasiDiskusi tbody tr[data-id="${postId}"]`);
             if (rowToUpdate) {
                 const kontenCell = rowToUpdate.querySelector('.konten-diskusi');
@@ -417,7 +413,6 @@
         function toggleSelectAllModerasi(checked) {
             const checkboxes = document.querySelectorAll('#tabelModerasiDiskusi tbody .form-check-input');
             checkboxes.forEach(cb => {
-                // Hanya centang checkbox pada baris yang terlihat (tidak di-filter)
                 if(cb.closest('tr').style.display !== 'none'){
                      cb.checked = checked;
                 }
@@ -452,7 +447,6 @@
                 }
             }
             document.getElementById('noResultsDiskusi').style.display = found ? "none" : "";
-            // Uncheck "select all" jika filter berubah
             document.getElementById('selectAllPostsModerasi').checked = false;
         }
 
@@ -461,8 +455,6 @@
             let countLaporan = 0;
             let countPending = 0;
             rows.forEach(row => {
-                // Cek status asli, bukan yang mungkin sudah berubah di UI sebelum refresh dari server
-                // Untuk simulasi frontend, kita tetap gunakan dataset.status
                 if (row.dataset.status === 'dilaporkan') countLaporan++;
                 if (row.dataset.status === 'pending') countPending++;
             });

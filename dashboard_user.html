@@ -8,9 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/style.css">
     <style>
-        /* Anda bisa menambahkan style spesifik untuk dashboard_user.html di sini jika perlu,
-           atau pastikan style.css sudah mencakup semua yang dibutuhkan.
-           .toast-container akan mengambil style dari style.css jika sudah ada. */
+
         .toast-container {
             z-index: 1100; 
         }
@@ -108,15 +106,14 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Fungsi untuk menampilkan toast
         function showToastDash(message, type = 'success') {
             const toastContainer = document.querySelector('.toast-container');
             if (!toastContainer) { 
                 console.warn('Toast container not found. Displaying alert instead.');
-                alert(message); // Fallback jika toast container tidak ada
+                alert(message); 
                 return;
             }
-            const toastId = 'toast-dash-' + Math.random().toString(36).substr(2, 9); // ID unik
+            const toastId = 'toast-dash-' + Math.random().toString(36).substr(2, 9); 
             let bgClass = 'bg-success'; 
             if (type === 'error') bgClass = 'bg-danger';
             if (type === 'warning') bgClass = 'bg-warning text-dark';
@@ -135,7 +132,7 @@
             toastContainer.insertAdjacentHTML('beforeend', toastHTML);
             
             const toastElement = document.getElementById(toastId);
-            const toast = new bootstrap.Toast(toastElement, { delay: 3000 }); // Auto-hide setelah 3 detik
+            const toast = new bootstrap.Toast(toastElement, { delay: 3000 }); 
             toast.show();
             toastElement.addEventListener('hidden.bs.toast', () => { 
                 toastElement.remove();
@@ -146,7 +143,7 @@
             showToastDash('Anda telah logout. Mengarahkan kembali ke halaman login.', 'info');
             setTimeout(() => {
                 window.location.href = 'index.html';
-            }, 1500); // Jeda 1.5 detik agar toast sempat terlihat
+            }, 1500); 
         }
     </script>
 </body>
